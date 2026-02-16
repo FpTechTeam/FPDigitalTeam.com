@@ -9,12 +9,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+  <!-- Global site styles -->
   <link rel="stylesheet" href="/styles.css" />
-  <base href="/" />
+  <!-- Projects-only styles -->
+  <link rel="stylesheet" href="/projects.css" />
 </head>
-<body>
 
-  <!-- Video Background (same as index) -->
+<body>
+  <!-- Video Background -->
   <div class="video-bg" aria-hidden="true">
     <video autoplay muted loop playsinline preload="metadata" class="bg-video">
       <source src="/bckgupdate.mp4" type="video/mp4">
@@ -22,7 +24,7 @@
     <div class="video-overlay"></div>
   </div>
 
-  <!-- Top Bar (same as index) -->
+  <!-- Top Bar -->
   <header class="topbar">
     <div class="container topbar-inner">
       <a class="brand" href="/">
@@ -33,7 +35,7 @@
         </span>
       </a>
 
-      <nav class="nav">
+      <nav class="nav" id="siteNav">
         <a href="/#projects">Showcase</a>
         <a href="/projects.html" class="is-current">Projects</a>
         <a href="/#topics">Grant Topics</a>
@@ -41,154 +43,199 @@
         <a href="/#contact" class="btn btn-primary">Contact</a>
       </nav>
 
-      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="siteNav">☰</button>
     </div>
   </header>
 
   <main>
-    <!-- Page Header -->
     <section class="section" style="padding-top: 44px;">
       <div class="container">
+
         <div class="section-head">
           <div>
             <h2>Projects</h2>
-            <p>
-              A structured portfolio designed for grant reviewers: objective → innovation → feasibility → transition.
-              Duplicate any project block to add more.
+            <p class="muted">
+              Featured first: NSTNK™ Helmet. Then explore the rest by shuffling through the project rail.
             </p>
-          </div>
-          <div class="filters" role="group" aria-label="Project filters">
-            <button class="filter is-active" data-filter="all">All</button>
-            <button class="filter" data-filter="helmet">Helmet</button>
-            <button class="filter" data-filter="viz">Visualization</button>
-            <button class="filter" data-filter="edge">Edge</button>
-            <button class="filter" data-filter="training">Training</button>
           </div>
         </div>
 
-        <!-- Project Grid -->
-        <div class="grid cards" id="projectGrid">
-
-          <!-- ===================== PROJECT TEMPLATE =====================
-               Copy/paste one <article class="card project" ...> block per project
-               Update: title, tags, bullets, status, and links
-          ================================================================= -->
-
-          <article class="card project" data-tags="helmet viz edge">
-            <div class="card-top">
+        <!-- ===========================
+             FEATURED: HELMET (TOP CENTER)
+        ============================ -->
+        <section class="featured" aria-label="Featured project">
+          <article class="featured-card">
+            <div class="featured-top">
               <span class="chip">Flagship</span>
               <span class="chip chip-soft">Helmet</span>
               <span class="chip chip-soft">Edge</span>
             </div>
 
-            <h3>NSTNK™ Helmet System</h3>
-            <p>
-              A helmet-centered platform concept for real-time situational awareness: sensor visualization,
-              low-SWaP edge compute, and operator-first interface design.
+            <div class="featured-title">
+              <h3>NSTNK™ Helmet System</h3>
+              <span class="status-dot" title="In development"></span>
+            </div>
+
+            <p class="muted">
+              A helmet-centered platform concept for real-time situational awareness: panoramic perception,
+              low-SWaP edge compute, and an operator-first AR interface.
             </p>
 
-            <ul class="bullets">
-              <li><strong>Objective:</strong> deliver clear, real-time awareness under constrained conditions.</li>
-              <li><strong>Innovation:</strong> modular visualization + data pipeline optimized for low power.</li>
-              <li><strong>Feasibility:</strong> measurable performance targets (FPS/latency/power).</li>
-              <li><strong>Transition:</strong> integrates into tactical ecosystems and dual-use safety markets.</li>
-            </ul>
+            <!-- Hero carousel -->
+            <div class="carousel hero" data-visible="1" aria-label="NSTNK Helmet preview">
+              <button class="car-btn prev" type="button" aria-label="Previous slides">‹</button>
 
-            <div class="card-actions">
-              <a class="link" href="/#topics">Aligned grant topics →</a>
+              <div class="car-viewport">
+                <div class="car-track">
+                  <div class="car-slide fit">
+                    <img src="/images/NSTNK_helmet_2100x900.png" alt="NSTNK Helmet hero render" loading="lazy">
+                  </div>
+
+                  <div class="car-slide">
+                    <div class="car-ph">
+                      Prototype overlay
+                      <span class="car-ph-sub">coming soon</span>
+                    </div>
+                  </div>
+
+                  <div class="car-slide">
+                    <div class="car-ph">
+                      Prototype photos
+                      <span class="car-ph-sub">coming soon</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button class="car-btn next" type="button" aria-label="Next slides">›</button>
+              <div class="car-dots" aria-hidden="true"></div>
             </div>
-          </article>
-
-          <article class="card project" data-tags="viz edge">
-            <div class="card-top">
-              <span class="chip">Grant-ready</span>
-              <span class="chip chip-soft">Visualization</span>
-            </div>
-
-            <h3>CB Tactical Visualization Engine</h3>
-            <p>
-              Real-time hazard gradient rendering that converts sensor outputs into actionable overlays,
-              designed to reduce cognitive load and support shared awareness.
-            </p>
-
-            <ul class="bullets">
-              <li><strong>Objective:</strong> near real-time visualization for faster decision cycles.</li>
-              <li><strong>Innovation:</strong> adaptive fidelity control tied to SWaP constraints.</li>
-              <li><strong>Feasibility:</strong> performance validation with profiling + instrumentation.</li>
-              <li><strong>Transition:</strong> TAK/CoT compatible pathways and Phase II integration plan.</li>
-            </ul>
-
-            <div class="card-actions">
-              <a class="link" href="/#topics">View topic brief →</a>
-            </div>
-          </article>
-
-          <article class="card project" data-tags="edge">
-            <div class="card-top">
-              <span class="chip">Platform</span>
-              <span class="chip chip-soft">Edge</span>
-            </div>
-
-            <h3>Rugged Edge Compute Node</h3>
-            <p>
-              A deployable compute + networking concept to host real-time analytics and visualization modules
-              when connectivity is degraded, intermittent, or denied.
-            </p>
 
             <ul class="bullets">
-              <li><strong>Objective:</strong> resilient computation for field use.</li>
-              <li><strong>Innovation:</strong> modular services + caching + sync strategy.</li>
-              <li><strong>Feasibility:</strong> power/performance trade studies.</li>
-              <li><strong>Transition:</strong> integrate with helmet + sensor systems over time.</li>
+              <li><strong>Objective:</strong> clear real-time awareness under constrained conditions.</li>
+              <li><strong>Innovation:</strong> modular visualization + edge AI pipeline optimized for power.</li>
+              <li><strong>Feasibility:</strong> measurable targets (FPS/latency/power) and validation plan.</li>
+              <li><strong>Transition:</strong> tactical ecosystems and dual-use safety markets.</li>
             </ul>
 
-            <div class="card-actions">
-              <a class="link" href="/#capabilities">Core capabilities →</a>
+            <div class="featured-actions">
+              <a class="btn btn-primary" href="/helmet.html">Open NSTNK Helmet →</a>
+              <a class="btn" href="/#topics">Aligned Grant Topics</a>
             </div>
           </article>
+        </section>
 
-          <article class="card project" data-tags="training viz">
-            <div class="card-top">
-              <span class="chip">Dual-use</span>
-              <span class="chip chip-soft">Training</span>
+        <!-- ===========================
+             PROJECT RAIL: OTHERS UNDER HELMET
+        ============================ -->
+        <section class="project-rail" aria-label="Other projects">
+          <div class="rail-head">
+            <h3>Explore Other Projects</h3>
+            <p class="muted">Drag/swipe or use arrows to shuffle through project previews.</p>
+          </div>
+
+          <div class="rail">
+            <button class="rail-btn prev" type="button" aria-label="Previous projects">‹</button>
+
+            <div class="rail-viewport">
+              <div class="rail-track">
+
+                <!-- FP-360 (now rotates prototype images) -->
+                <a class="rail-card" href="/projects.html#fp360" id="fp360">
+                  <div class="rail-card-top">
+                    <span class="chip chip-soft">Edge</span>
+                    <span class="chip chip-soft">Visualization</span>
+                  </div>
+                  <div class="rail-card-title">
+                    <span class="rail-name">FP-360™ Perception Ring</span>
+                  </div>
+
+                  <!-- Mini carousel inside the rail card -->
+                  <div class="mini" data-mini>
+                    <img class="mini-img is-active" src="/images/360_degree_AI_camera.png" alt="FP-360 concept" loading="lazy">
+                    <img class="mini-img" src="/images/fp360_proto_lab.png" alt="FP-360 lab prototype" loading="lazy">
+                    <img class="mini-img" src="/images/fp360_proto_field.png" alt="FP-360 field prototype" loading="lazy">
+                  </div>
+
+                  <div class="rail-meta muted">Synced 360 capture • Stitch • AI overlay</div>
+                </a>
+
+                <!-- CB Engine -->
+                <a class="rail-card" href="/projects.html#engine" id="engine">
+                  <div class="rail-card-top">
+                    <span class="chip chip-soft">Visualization</span>
+                    <span class="chip chip-soft">Edge</span>
+                  </div>
+                  <div class="rail-card-title">
+                    <span class="rail-name">CB Visualization Engine</span>
+                  </div>
+                  <div class="rail-thumb">
+                    <div class="rail-ph">
+                      Architecture + overlays
+                      <span class="rail-ph-sub">coming soon</span>
+                    </div>
+                  </div>
+                  <div class="rail-meta muted">Hazard gradients • Low latency • Profiling</div>
+                </a>
+
+                <!-- Edge Node -->
+                <a class="rail-card" href="/projects.html#edgenode" id="edgenode">
+                  <div class="rail-card-top">
+                    <span class="chip chip-soft">Edge</span>
+                  </div>
+                  <div class="rail-card-title">
+                    <span class="rail-name">Rugged Edge Compute Node</span>
+                  </div>
+                  <div class="rail-thumb">
+                    <div class="rail-ph">
+                      Enclosure + network
+                      <span class="rail-ph-sub">coming soon</span>
+                    </div>
+                  </div>
+                  <div class="rail-meta muted">Field compute • Cache • Sync</div>
+                </a>
+
+                <!-- Training -->
+                <a class="rail-card" href="/projects.html#training" id="training">
+                  <div class="rail-card-top">
+                    <span class="chip chip-soft">Training</span>
+                    <span class="chip chip-soft">Visualization</span>
+                  </div>
+                  <div class="rail-card-title">
+                    <span class="rail-name">AR Training Layer</span>
+                  </div>
+                  <div class="rail-thumb">
+                    <div class="rail-ph">
+                      HUD + scenarios
+                      <span class="rail-ph-sub">coming soon</span>
+                    </div>
+                  </div>
+                  <div class="rail-meta muted">Scenario rehearsal • UX testing • Shared logic</div>
+                </a>
+
+              </div>
             </div>
 
-            <h3>AR Training & Simulation Visual Layer</h3>
-            <p>
-              A visualization layer for training and rehearsal that reuses the same real-time rendering logic
-              while enabling non-operational evaluation and UX testing.
-            </p>
+            <button class="rail-btn next" type="button" aria-label="Next projects">›</button>
+          </div>
+        </section>
 
-            <ul class="bullets">
-              <li><strong>Objective:</strong> accelerate UI validation and training use cases.</li>
-              <li><strong>Innovation:</strong> device-agnostic overlay design rules.</li>
-              <li><strong>Feasibility:</strong> fast iteration on content + workflows.</li>
-              <li><strong>Transition:</strong> supports defense, safety, and industrial training markets.</li>
-            </ul>
-
-            <div class="card-actions">
-              <a class="link" href="/#topics">Grant topics that fit →</a>
-            </div>
-          </article>
-
-        </div>
-
-        <!-- Callout -->
         <div class="callout" style="margin-top: 22px;">
           <div>
             <h3>Need a one-page brief per project?</h3>
-            <p>
+            <p class="muted">
               We can generate reviewer-friendly one-pagers: problem, innovation, Phase I deliverables, Phase II roadmap,
               and transition plan.
             </p>
           </div>
           <a class="btn btn-primary" href="mailto:info@fpdigitalteam.com">Request briefs</a>
         </div>
+
       </div>
     </section>
   </main>
 
-  <!-- Footer (same styling as index) -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-left">
@@ -205,37 +252,148 @@
     <div class="container footer-bottom">
       <span>© 2026 FP Digital. All rights reserved.</span>
       <span class="sep">•</span>
-      <span>Structured for fast review.</span>
+      <span class="muted">Structured for fast review.</span>
     </div>
   </footer>
 
   <script>
-    // Mobile nav toggle (same behavior as index)
-    const btn = document.querySelector('.nav-toggle');
+    // Mobile nav toggle
+    const navBtn = document.querySelector('.nav-toggle');
     const nav = document.querySelector('.nav');
-    if (btn && nav) {
-      btn.addEventListener('click', () => {
+    if (navBtn && nav) {
+      navBtn.addEventListener('click', () => {
         const open = nav.classList.toggle('is-open');
-        btn.setAttribute('aria-expanded', String(open));
+        navBtn.setAttribute('aria-expanded', String(open));
       });
     }
 
-    // Project filters
-    const filters = document.querySelectorAll('.filter');
-    const projects = document.querySelectorAll('.project');
-    filters.forEach(f => f.addEventListener('click', () => {
-      filters.forEach(x => x.classList.remove('is-active'));
-      f.classList.add('is-active');
-      const key = f.dataset.filter;
-      projects.forEach(p => {
-        const tags = (p.dataset.tags || '');
-        p.style.display = (key === 'all' || tags.includes(key)) ? '' : 'none';
+    // Drag-to-scroll helper
+    function enableDragScroll(track){
+      let isDown = false, startX = 0, startLeft = 0, moved = false;
+
+      track.addEventListener('pointerdown', (e) => {
+        isDown = true; moved = false;
+        startX = e.clientX;
+        startLeft = track.scrollLeft;
+        track.classList.add('is-dragging');
+        track.setPointerCapture(e.pointerId);
       });
-    }));
+
+      track.addEventListener('pointermove', (e) => {
+        if (!isDown) return;
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > 3) moved = true;
+        track.scrollLeft = startLeft - dx;
+      });
+
+      track.addEventListener('pointerup', () => {
+        isDown = false;
+        track.classList.remove('is-dragging');
+      });
+
+      track.addEventListener('click', (e) => {
+        if (moved) e.preventDefault();
+      }, true);
+    }
+
+    // Premium carousel init (dots + active slide + prev/next)
+    function initCarousel(carousel){
+      const track = carousel.querySelector('.car-track');
+      const prev = carousel.querySelector('.car-btn.prev');
+      const next = carousel.querySelector('.car-btn.next');
+      const dotsWrap = carousel.querySelector('.car-dots');
+      const slides = Array.from(carousel.querySelectorAll('.car-slide'));
+      if (!track || slides.length === 0) return;
+
+      carousel.dataset.index = "0";
+
+      if (dotsWrap){
+        dotsWrap.innerHTML = "";
+        slides.forEach((_, i) => {
+          const d = document.createElement('button');
+          d.type = "button";
+          d.className = "car-dot" + (i === 0 ? " is-active" : "");
+          d.setAttribute('aria-label', `Go to slide ${i + 1}`);
+          d.addEventListener('click', () => scrollTo(i));
+          dotsWrap.appendChild(d);
+        });
+      }
+
+      function updateActive(){
+        const trackRect = track.getBoundingClientRect();
+        let best = 0, bestDist = Infinity;
+        slides.forEach((s, i) => {
+          const r = s.getBoundingClientRect();
+          const dist = Math.abs(r.left - trackRect.left);
+          if (dist < bestDist){ bestDist = dist; best = i; }
+        });
+
+        slides.forEach((s, i) => s.classList.toggle('is-active', i === best));
+        if (dotsWrap){
+          Array.from(dotsWrap.children).forEach((d, i) => d.classList.toggle('is-active', i === best));
+        }
+        carousel.dataset.index = String(best);
+      }
+
+      function scrollTo(i){
+        const idx = Math.max(0, Math.min(i, slides.length - 1));
+        track.scrollTo({ left: slides[idx].offsetLeft - 12, behavior: 'smooth' });
+      }
+
+      function move(dir){
+        const cur = parseInt(carousel.dataset.index || "0", 10);
+        const nextIdx = (cur + dir + slides.length) % slides.length;
+        scrollTo(nextIdx);
+      }
+
+      if (prev) prev.addEventListener('click', () => move(-1));
+      if (next) next.addEventListener('click', () => move(1));
+
+      enableDragScroll(track);
+
+      track.addEventListener('scroll', () => {
+        if (track._raf) cancelAnimationFrame(track._raf);
+        track._raf = requestAnimationFrame(updateActive);
+      }, { passive: true });
+
+      updateActive();
+    }
+
+    document.querySelectorAll('.carousel').forEach(initCarousel);
+
+    // Rail controls
+    (function initRail(){
+      const track = document.querySelector('.rail-track');
+      const prev = document.querySelector('.rail-btn.prev');
+      const next = document.querySelector('.rail-btn.next');
+      if (!track) return;
+
+      enableDragScroll(track);
+
+      function scrollByCards(dir){
+        const card = track.querySelector('.rail-card');
+        const step = card ? (card.clientWidth + 14) : 320;
+        track.scrollBy({ left: dir * step, behavior: 'smooth' });
+      }
+
+      if (prev) prev.addEventListener('click', () => scrollByCards(-1));
+      if (next) next.addEventListener('click', () => scrollByCards(1));
+    })();
+
+    // Mini image rotator inside FP-360 rail card
+    (function initMiniRotators(){
+      const minis = document.querySelectorAll('[data-mini]');
+      minis.forEach(mini => {
+        const imgs = Array.from(mini.querySelectorAll('.mini-img'));
+        if (imgs.length < 2) return;
+        let i = 0;
+        setInterval(() => {
+          imgs[i].classList.remove('is-active');
+          i = (i + 1) % imgs.length;
+          imgs[i].classList.add('is-active');
+        }, 2200);
+      });
+    })();
   </script>
 </body>
 </html>
-
-
-
-
