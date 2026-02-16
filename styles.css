@@ -520,3 +520,88 @@ h1{
   .bg-video{ display:none; }
   .video-bg{ background: radial-gradient(circle at top, #041a3d, #020b1a); }
 }
+/* Icon uses currentColor so per-platform colors work */
+.social-icon{
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+/* Platform colors */
+.social-banner .soc.github{ color: #E6EDF3; }    /* GitHub (light) */
+.social-banner .soc.linkedin{ color: #0A66C2; }  /* LinkedIn blue */
+.social-banner .soc.x{ color: #D7D7D7; }         /* X neutral */
+.social-banner .soc.youtube{ color: #FF0000; }   /* YouTube red */
+
+/* Optional: nicer hover glow per platform */
+.social-banner .soc.github:hover{ box-shadow: 0 0 14px rgba(230,237,243,0.25); }
+.social-banner .soc.linkedin:hover{ box-shadow: 0 0 14px rgba(10,102,194,0.35); }
+.social-banner .soc.x:hover{ box-shadow: 0 0 14px rgba(215,215,215,0.25); }
+.social-banner .soc.youtube:hover{ box-shadow: 0 0 14px rgba(255,0,0,0.30); }
+
+/* ===== Social banner (platform colors) ===== */
+.social-banner{
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+
+  padding: 8px 6px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.28);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.25);
+}
+
+.social-banner a{
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+
+  /* IMPORTANT: do NOT force white here */
+  background: rgba(255,255,255,0.05);
+  transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+}
+
+.social-banner a:hover{
+  transform: translateX(-2px);
+}
+
+/* IMPORTANT: icon uses currentColor so each platform can color it */
+.social-icon{
+  width: 18px;
+  height: 18px;
+  display: block;
+  fill: currentColor;
+}
+
+/* Platform colors */
+.social-banner .soc.github   { color: #E6EDF3; }   /* GitHub */
+.social-banner .soc.linkedin { color: #0A66C2; }   /* LinkedIn */
+.social-banner .soc.x        { color: #D7D7D7; }   /* X */
+.social-banner .soc.youtube  { color: #FF0000; }   /* YouTube */
+
+/* Platform hover glow */
+.social-banner .soc.github:hover   { box-shadow: 0 0 14px rgba(230,237,243,0.22); background: rgba(230,237,243,0.08); }
+.social-banner .soc.linkedin:hover { box-shadow: 0 0 14px rgba(10,102,194,0.35);  background: rgba(10,102,194,0.14); }
+.social-banner .soc.x:hover        { box-shadow: 0 0 14px rgba(215,215,215,0.22); background: rgba(215,215,215,0.08); }
+.social-banner .soc.youtube:hover  { box-shadow: 0 0 14px rgba(255,0,0,0.30);     background: rgba(255,0,0,0.12); }
+
+/* Mobile: bottom center */
+@media (max-width: 720px){
+  .social-banner{
+    flex-direction: row;
+    top: auto;
+    bottom: 12px;
+    right: 50%;
+    transform: translateX(50%);
+    padding: 6px 8px;
+  }
+}
