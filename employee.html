@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FP Digital | Employee Portal</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="employee.css" />
+
+  <meta name="robots" content="noindex,nofollow" />
+
+  <!-- Netlify Identity -->
+  <script defer src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+
+<body>
+
+  <!-- Background -->
+  <div class="portal-bg" aria-hidden="true">
+    <div class="orb a"></div>
+    <div class="orb b"></div>
+    <div class="orb c"></div>
+    <div class="noise"></div>
+  </div>
+
+  <!-- Top Bar -->
+  <header class="portal-top">
+    <div class="brand">
+      <div class="mark"></div>
+      <div>
+        <div class="title">FP Digital</div>
+        <div class="sub">Employee Portal</div>
+      </div>
+    </div>
+
+    <div class="top-actions">
+      <div class="who" id="who">Not signed in</div>
+      <button class="btn primary" id="loginBtn">Login</button>
+      <button class="btn ghost" id="logoutBtn" style="display:none;">Logout</button>
+    </div>
+  </header>
+
+  <!-- LOCKED SCREEN (VISIBLE UNTIL LOGIN) -->
+  <section class="locked" id="locked">
+    <div class="card">
+      <h1>Employee Portal Access</h1>
+      <p class="muted">
+        Please sign in with your employee credentials to continue.
+      </p>
+
+      <button class="btn primary" id="lockedLoginBtn">Sign In</button>
+
+      <div class="muted tiny" style="margin-top:10px">
+        Access is restricted to authorized FP Digital personnel.
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTAL SHELL (HIDDEN UNTIL LOGIN) -->
+  <main class="portal-shell" id="shell" style="display:none;">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+      <button class="tab active" data-tab="home">
+        <span class="dot"></span> Home
+      </button>
+
+      <button class="tab" data-tab="applications">
+        <span class="dot teal"></span> Applications
+      </button>
+
+      <button class="tab" data-tab="projects">
+        <span class="dot purple"></span> Projects
+      </button>
+
+      <!-- ADMIN TAB (VISIBLE ONLY FOR ADMIN ROLE) -->
+      <button class="tab" data-tab="admin" id="adminTab" style="display:none;">
+        <span class="dot red"></span> Admin
+      </button>
+
+      <a class="backlink" href="index.html">← Back to site</a>
+    </aside>
+
+    <!-- Content -->
+    <section class="content">
+
+      <!-- HOME -->
+      <section class="panel active" id="panel-home">
+        <div class="card">
+          <h1>Welcome</h1>
+          <p class="muted">
+            You are logged into the FP Digital internal portal.
+          </p>
+
+          <div class="grid">
+            <div class="mini">
+              <div class="k">Authentication</div>
+              <div class="v" id="authStatus">Signed in</div>
+            </div>
+
+            <div class="mini">
+              <div class="k">Role</div>
+              <div class="v" id="roleStatus">—</div>
+            </div>
+
+            <div class="mini">
+              <div class="k">System</div>
+              <div class="v" id="apiStatus">Connected</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- APPLICATIONS -->
+      <section class="panel" id="panel-applications">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2>Applications</h2>
+              <p class="muted">Internal application submissions</p>
+            </div>
+
+            <div class="actions">
+              <button class="btn ghost" id="appsRefresh">Refresh</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+
+              <tbody id="appsBody">
+                <tr>
+                  <td colspan="5" class="muted">Loading…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section class="panel" id="panel-projects">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2>Projects</h2>
+              <p class="muted">Current FP Digital project catalog</p>
+            </div>
+
+            <div class="actions">
+              <button class="btn ghost" id="projectsRefresh">Refresh</button>
+            </div>
+          </div>
+
+          <div class="list" id="projectsList">
+            <div class="muted">Loading…</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ADMIN -->
+      <section class="panel" id="panel-admin">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2>Admin Tools</h2>
+              <p class="muted">Administrative management interface</p>
+            </div>
+
+            <div class="actions">
+              <button class="btn ghost" id="adminCheck">Verify</button>
+            </div>
+          </div>
+
+          <div class="admin-grid">
+
+            <div class="admin-card">
+              <h3>Admin Status</h3>
+              <p class="muted">Server-side role verification</p>
+              <pre class="code" id="adminOut">{}</pre>
+            </div>
+
+            <div class="admin-card">
+              <h3>Project Editor</h3>
+              <p class="muted">Update live project catalog</p>
+
+              <div class="field">
+                <label>Projects JSON</label>
+                <textarea id="projectsJson" rows="10"></textarea>
+              </div>
+
+              <div class="actions">
+                <button class="btn primary" id="saveProjects">
+                  Save Changes
+                </button>
+              </div>
+
+              <div class="muted tiny" id="saveMsg"></div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <div class="toast" id="toast"></div>
+
+    </section>
+  </main>
+
+  <script src="employee.js"></script>
+
+</body>
+</html>
