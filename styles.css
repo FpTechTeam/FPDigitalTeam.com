@@ -605,3 +605,33 @@ h1{
     padding: 6px 8px;
   }
 }
+
+.footer-grid{
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.footer-col h4{
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
+.footer-col a{
+  display: block;
+  text-decoration: none;
+  margin: 8px 0;
+  opacity: 0.85;
+}
+
+.footer-col a:hover{
+  opacity: 1;
+  text-decoration: underline;
+}
+
+@media (max-width: 900px){
+  .footer-grid{ grid-template-columns: 1fr; }
+}

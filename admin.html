@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FP Digital | Admin</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="admin.css" />
+
+  <meta name="robots" content="noindex,nofollow" />
+</head>
+
+<body>
+  <div class="admin-bg" aria-hidden="true">
+    <div class="orb orb-a"></div>
+    <div class="orb orb-b"></div>
+    <div class="orb orb-c"></div>
+    <div class="noise"></div>
+    <div class="gridlines"></div>
+  </div>
+
+  <div class="admin-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-text">
+          <div class="brand-title">FP Digital</div>
+          <div class="brand-sub">Admin Console</div>
+        </div>
+      </div>
+
+      <nav class="side-nav">
+        <button class="nav-item active" data-view="applications">
+          <span class="dot"></span>
+          Applications
+          <span class="pill" id="newCount">—</span>
+        </button>
+
+        <button class="nav-item" data-view="projects">
+          <span class="dot purple"></span>
+          Projects CMS
+        </button>
+
+        <button class="nav-item" data-view="analytics">
+          <span class="dot teal"></span>
+          Analytics
+        </button>
+      </nav>
+
+      <div class="side-footer">
+        <div class="mini">
+          <div class="mini-k">Status</div>
+          <div class="mini-v" id="apiHealth">Checking…</div>
+        </div>
+
+        <div class="mini">
+          <div class="mini-k">Signed in</div>
+          <div class="mini-v" id="whoami">Protected by Cloudflare Access</div>
+        </div>
+
+        <a class="link" href="index.html">← Back to site</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 id="viewTitle">Applications</h1>
+          <p class="muted" id="viewSub">Inbox view, internal notes, and status pipeline.</p>
+        </div>
+
+        <div class="topbar-right">
+          <button class="btn ghost" id="refreshBtn">Refresh</button>
+          <button class="btn primary" id="exportBtn">Export CSV</button>
+        </div>
+      </header>
+
+      <section class="content">
+
+        <!-- VIEW: Applications -->
+        <section class="view active" id="view-applications">
+          <div class="card">
+            <div class="card-head">
+              <div class="filters">
+                <div class="field">
+                  <label>Search</label>
+                  <input id="appSearch" type="text" placeholder="name, email, org…" autocomplete="off" />
+                </div>
+
+                <div class="field">
+                  <label>Status</label>
+                  <select id="appStatus">
+                    <option value="">All</option>
+                    <option value="new">new</option>
+                    <option value="reviewing">reviewing</option>
+                    <option value="contacted">contacted</option>
+                    <option value="rejected">rejected</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label>Limit</label>
+                  <select id="appLimit">
+                    <option value="50">50</option>
+                    <option value="100" selected>100</option>
+                    <option value="200">200</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label>Sort</label>
+                  <select id="appSort">
+                    <option value="created_desc" selected>Newest</option>
+                    <option value="created_asc">Oldest</option>
+                    <option value="status">Status</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="right-actions">
+                <button class="btn ghost" id="clearFiltersBtn">Clear</button>
+                <button class="btn primary" id="loadAppsBtn">Load</button>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="table" id="appsTable">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Applicant</th>
+                    <th>Type</th>
+                    <th>Org</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="appsTbody">
+                  <tr><td colspan="5" class="muted">No data yet.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Drawer -->
+          <aside class="drawer" id="appDrawer" aria-hidden="true">
+            <div class="drawer-head">
+              <div>
+                <div class="drawer-title" id="drawerTitle">Application</div>
+                <div class="drawer-sub muted" id="drawerSub">Select an application to view details.</div>
+              </div>
+              <button class="icon-btn" id="drawerCloseBtn" aria-label="Close">✕</button>
+            </div>
+
+            <div class="drawer-body" id="drawerBody">
+              <!-- Filled by JS -->
+            </div>
+
+            <div class="drawer-foot">
+              <div class="drawer-actions">
+                <select id="drawerStatus">
+                  <option value="new">new</option>
+                  <option value="reviewing">reviewing</option>
+                  <option value="contacted">contacted</option>
+                  <option value="rejected">rejected</option>
+                </select>
+                <button class="btn ghost" id="saveNotesBtn">Save notes</button>
+                <button class="btn primary" id="saveStatusBtn">Update status</button>
+              </div>
+              <div class="muted tiny" id="drawerMsg"></div>
+            </div>
+          </aside>
+        </section>
+
+        <!-- VIEW: Projects -->
+        <section class="view" id="view-projects">
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2>Projects</h2>
+                  <p class="muted">Draft/publish, sort order, tags, and links.</p>
+                </div>
+                <div class="right-actions">
+                  <button class="btn ghost" id="loadProjectsBtn">Load</button>
+                  <button class="btn primary" id="newProjectBtn">New Project</button>
+                </div>
+              </div>
+
+              <div class="list" id="projectsList">
+                <div class="muted">No projects loaded.</div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head">
+                <div>
+                  <h2 id="projEditorTitle">Project Editor</h2>
+                  <p class="muted" id="projEditorSub">Select a project to edit.</p>
+                </div>
+                <div class="right-actions">
+                  <button class="btn ghost" id="deleteProjectBtn" disabled>Delete</button>
+                  <button class="btn primary" id="saveProjectBtn" disabled>Save</button>
+                </div>
+              </div>
+
+              <div class="editor">
+                <div class="editor-grid">
+                  <div class="field">
+                    <label>Title</label>
+                    <input id="pTitle" type="text" placeholder="Project title" />
+                  </div>
+                  <div class="field">
+                    <label>Subtitle</label>
+                    <input id="pSubtitle" type="text" placeholder="Short subtitle" />
+                  </div>
+
+                  <div class="field">
+                    <label>Category</label>
+                    <input id="pCategory" type="text" placeholder="Helmet / Engine / Sensor / ..." />
+                  </div>
+                  <div class="field">
+                    <label>Tags (comma)</label>
+                    <input id="pTags" type="text" placeholder="AI, Embedded, Optics" />
+                  </div>
+
+                  <div class="field">
+                    <label>CTA Label</label>
+                    <input id="pCtaLabel" type="text" placeholder="Learn more" />
+                  </div>
+                  <div class="field">
+                    <label>CTA URL</label>
+                    <input id="pCtaUrl" type="url" placeholder="https://..." />
+                  </div>
+
+                  <div class="field">
+                    <label>Image URL</label>
+                    <input id="pImageUrl" type="url" placeholder="https://..." />
+                  </div>
+                  <div class="field">
+                    <label>Sort Order</label>
+                    <input id="pSort" type="number" placeholder="0" />
+                  </div>
+
+                  <div class="field inline">
+                    <label class="check">
+                      <input id="pPublished" type="checkbox" />
+                      <span>Published</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="split">
+                  <div class="field">
+                    <label>Description (Markdown)</label>
+                    <textarea id="pDesc" rows="10" placeholder="Write markdown here..."></textarea>
+                    <div class="muted tiny">Tip: Use **bold**, *italics*, - lists, and links.</div>
+                  </div>
+
+                  <div class="preview">
+                    <div class="preview-head">
+                      <span class="muted">Live preview</span>
+                    </div>
+                    <div class="preview-body" id="mdPreview">
+                      <div class="muted">Preview will appear here.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="muted tiny" id="projMsg"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW: Analytics -->
+        <section class="view" id="view-analytics">
+          <div class="card">
+            <div class="card-head">
+              <div>
+                <h2>Analytics</h2>
+                <p class="muted">Quick health metrics (v1).</p>
+              </div>
+              <div class="right-actions">
+                <button class="btn primary" id="loadAnalyticsBtn">Load</button>
+              </div>
+            </div>
+
+            <div class="kpis" id="kpis">
+              <div class="kpi">
+                <div class="kpi-k">Applications</div>
+                <div class="kpi-v" id="kpiApps">—</div>
+              </div>
+              <div class="kpi">
+                <div class="kpi-k">New</div>
+                <div class="kpi-v" id="kpiNew">—</div>
+              </div>
+              <div class="kpi">
+                <div class="kpi-k">Published Projects</div>
+                <div class="kpi-v" id="kpiPublished">—</div>
+              </div>
+              <div class="kpi">
+                <div class="kpi-k">Drafts</div>
+                <div class="kpi-v" id="kpiDrafts">—</div>
+              </div>
+            </div>
+
+            <div class="muted tiny" style="margin-top:12px">
+              We can evolve this into full funnel analytics + export + scoring.
+            </div>
+          </div>
+        </section>
+
+      </section>
+
+      <div class="toast" id="toast" aria-live="polite"></div>
+    </main>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
