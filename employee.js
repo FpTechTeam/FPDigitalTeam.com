@@ -1,32 +1,47 @@
 (function () {
-  // Top buttons
-  const loginBtn = document.getElementById("loginBtn");
-  const logoutBtn = document.getElementById("logoutBtn");
-  const who = document.getElementById("who");
+  const $ = (id) => document.getElementById(id);
 
-  // Lock + shell containers
-  const shell = document.getElementById("shell");
-  const locked = document.getElementById("locked");
-  const lockedLoginBtn = document.getElementById("lockedLoginBtn");
+  const shell = $("shell");
+  const locked = $("locked");
 
-  // Status cards
-  const authStatus = document.getElementById("authStatus");
-  const roleStatus = document.getElementById("roleStatus");
-  const apiStatus = document.getElementById("apiStatus");
+  const who = $("who");
+  const rolePill = $("rolePill");
 
-  // Tabs + panels
+  const loginBtn = $("loginBtn");
+  const signupBtn = $("signupBtn");
+  const logoutBtn = $("logoutBtn");
+
+  const lockedLoginBtn = $("lockedLoginBtn");
+  const lockedSignupBtn = $("lockedSignupBtn");
+
+  const authStatus = $("authStatus");
+  const roleStatus = $("roleStatus");
+  const apiStatus = $("apiStatus");
+
+  const adminTab = $("adminTab");
+  const toast = $("toast");
+
   const tabs = Array.from(document.querySelectorAll(".tab"));
   const panels = {
-    home: document.getElementById("panel-home"),
-    applications: document.getElementById("panel-applications"),
-    projects: document.getElementById("panel-projects"),
-    admin: document.getElementById("panel-admin"),
+    home: $("panel-home"),
+    applications: $("panel-applications"),
+    projects: $("panel-projects"),
+    admin: $("panel-admin"),
   };
 
-  const adminTab = document.getElementById("adminTab");
+  const appsBody = $("appsBody");
+  const appsRefresh = $("appsRefresh");
 
-  // Toast
-  const toast = document.getElementById("toast");
+  const projectsList = $("projectsList");
+  const projectsRefresh = $("projectsRefresh");
+
+  const adminCheck = $("adminCheck");
+  const adminOut = $("adminOut");
+
+  const projectsJson = $("projectsJson");
+  const saveProjects = $("saveProjects");
+  const saveMsg = $("saveMsg");
+
   function showToast(msg) {
     if (!toast) return;
     toast.textContent = msg;
@@ -34,21 +49,8 @@
     setTimeout(() => toast.classList.remove("show"), 2200);
   }
 
-  // Apps + projects UI
-  const appsBody = document.getElementById("appsBody");
-  const appsRefresh = document.getElementById("appsRefresh");
-  const projectsList = document.getElementById("projectsList");
-  const projectsRefresh = document.getElementById("projectsRefresh");
-
-  // Admin UI
-  const adminCheck = document.getElementById("adminCheck");
-  const adminOut = document.getElementById("adminOut");
-  const projectsJson = document.getElementById("projectsJson");
-  const saveProjects = document.getElementById("saveProjects");
-  const saveMsg = document.getElementById("saveMsg");
-
   function esc(s) {
-    return String(s ?? "").replace(/[&<>"']/g, m => ({
+    return String(s ?? "").replace(/[&<>"']/g, (m) => ({
       "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
     }[m]));
   }
@@ -59,18 +61,6 @@
     tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === name));
   }
 
-  // ---- Netlify Identity helpers ----
-  function getRoles(user) {
-    const rolesA = user?.app_metadata?.roles;
-    const rolesB = user?.user_metadata?.roles;
-    const roles = Array.isArray(rolesA) ? rolesA : Array.isArray(rolesB) ? rolesB : [];
-    return roles.map(r => String(r).toLowerCase());
-  }
-
-  function isAdmin(user) {
-    return getRoles(user).includes("admin");
-  }
-
   function waitForIdentity() {
     return new Promise((resolve) => {
       const tick = () => (window.netlifyIdentity ? resolve() : setTimeout(tick, 50));
@@ -78,8 +68,33 @@
     });
   }
 
-  async function fetchJson(url) {
-    const res = await fetch(url, { headers: { accept: "application/json" } });
+  function getRoles(user) {
+    const rolesA = user?.app_metadata?.roles;
+    const rolesB = user?.user_metadata?.roles;
+    const roles = Array.isArray(rolesA) ? rolesA : Array.isArray(rolesB) ? rolesB : [];
+    return roles.map(r => String(r).toLowerCase());
+  }
+
+  // Permission model (easy to expand)
+  function roleToPerms(role) {
+    const r = String(role || "employee").toLowerCase();
+    if (r === "admin") return { appsRead:true, appsWrite:true, projectsRead:true, projectsWrite:true, usersManage:true };
+    if (r === "developer") return { appsRead:true, appsWrite:false, projectsRead:true, projectsWrite:false, usersManage:false };
+    return { appsRead:true, appsWrite:false, projectsRead:true, projectsWrite:false, usersManage:false };
+  }
+
+  function resolveRole(user) {
+    const roles = getRoles(user);
+    if (roles.includes("admin")) return "admin";
+    if (roles.includes("developer")) return "developer";
+    return "employee";
+  }
+
+  async function fetchJson(url, options) {
+    const res = await fetch(url, {
+      headers: { accept: "application/json", ...(options?.headers || {}) },
+      ...options
+    });
     const text = await res.text();
     let data = {};
     try { data = text ? JSON.parse(text) : {}; } catch { data = { raw: text }; }
@@ -87,25 +102,23 @@
     return data;
   }
 
-  // ---- Data loaders ----
   async function loadApplications() {
     if (!appsBody) return;
     appsBody.innerHTML = `<tr><td colspan="5" class="muted">Loading…</td></tr>`;
     try {
       const data = await fetchJson("/.netlify/functions/applications-list");
       const items = data.items || [];
-
       appsBody.innerHTML = items.map(a => `
         <tr>
-          <td>${esc((a.created_at || "").slice(0, 10))}</td>
+          <td>${esc((a.created_at || "").slice(0,10))}</td>
           <td>${esc(a.name || "")}</td>
           <td>${esc(a.email || "")}</td>
           <td>${esc(a.type || "")}</td>
-          <td>${esc(a.status || "")}</td>
+          <td>${esc(a.status || "new")}</td>
         </tr>
       `).join("") || `<tr><td colspan="5" class="muted">No applications yet.</td></tr>`;
     } catch (e) {
-      appsBody.innerHTML = `<tr><td colspan="5" class="muted">Failed to load. (Login required)</td></tr>`;
+      appsBody.innerHTML = `<tr><td colspan="5" class="muted">Failed to load.</td></tr>`;
       showToast("Applications failed");
     }
   }
@@ -116,21 +129,19 @@
     try {
       const data = await fetchJson("/.netlify/functions/projects-get");
       const items = data.items || [];
-
       projectsList.innerHTML = items.map(p => `
         <div class="item">
           <div class="t">${esc(p.title || "")}</div>
           <div class="s">${esc(p.subtitle || "")}</div>
         </div>
       `).join("") || `<div class="muted">No projects found.</div>`;
-    } catch (e) {
-      projectsList.innerHTML = `<div class="muted">Failed to load. (Login required)</div>`;
+    } catch {
+      projectsList.innerHTML = `<div class="muted">Failed to load.</div>`;
       showToast("Projects failed");
     }
   }
 
-  // ---- Admin actions (server-side enforced) ----
-  async function verifyAdmin() {
+  async function verifyAdminServer() {
     if (!adminOut) return;
     adminOut.textContent = "{}";
     try {
@@ -138,107 +149,109 @@
       adminOut.textContent = JSON.stringify(data, null, 2);
       showToast("Admin verified ✅");
     } catch (e) {
-      adminOut.textContent = JSON.stringify({ ok: false, error: String(e.message || e) }, null, 2);
+      adminOut.textContent = JSON.stringify({ ok:false, error: String(e.message || e) }, null, 2);
       showToast("Admin check failed");
     }
   }
 
-  async function saveProjectsJson() {
-    if (!saveMsg) return;
+  async function saveProjectsServer() {
     saveMsg.textContent = "";
     try {
       const parsed = JSON.parse(projectsJson.value || "[]");
-
-      const res = await fetch("/.netlify/functions/projects-update", {
+      const data = await fetchJson("/.netlify/functions/projects-update", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ items: parsed })
       });
-
-      const text = await res.text();
-      let data = {};
-      try { data = text ? JSON.parse(text) : {}; } catch { data = { raw: text }; }
-      if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`);
-
       saveMsg.textContent = "Saved ✅";
       showToast("Projects saved ✅");
       await loadProjects();
+      return data;
     } catch (e) {
       saveMsg.textContent = `Save failed: ${String(e.message || e)}`;
       showToast("Save failed");
     }
   }
 
-  // ---- Strict login-first UI gate ----
-  async function syncUi(user) {
-    // LOCKED BY DEFAULT
-    if (!user) {
-      shell.style.display = "none";
-      locked.style.display = "grid";
+  function lock() {
+    shell.style.display = "none";
+    locked.style.display = "grid";
 
-      who.textContent = "Not signed in";
-      loginBtn.style.display = "";
-      logoutBtn.style.display = "none";
+    who.textContent = "Not signed in";
+    rolePill.style.display = "none";
 
-      if (authStatus) authStatus.textContent = "Signed out";
-      if (roleStatus) roleStatus.textContent = "—";
-      if (apiStatus) apiStatus.textContent = "—";
+    loginBtn.style.display = "";
+    signupBtn.style.display = "";
+    logoutBtn.style.display = "none";
 
-      if (adminTab) adminTab.style.display = "none";
-      setPanel("home");
-      return;
-    }
+    authStatus.textContent = "Signed out";
+    roleStatus.textContent = "—";
+    apiStatus.textContent = "—";
 
-    // AUTHENTICATED
+    adminTab.style.display = "none";
+    setPanel("home");
+  }
+
+  async function unlock(user) {
     shell.style.display = "";
     locked.style.display = "none";
 
-    const roles = getRoles(user);
-    const admin = isAdmin(user);
+    const role = resolveRole(user);
+    const perms = roleToPerms(role);
 
-    who.textContent = `${user.email} (${roles.join(", ") || "employee"})`;
+    who.textContent = user.email;
+    rolePill.textContent = role.toUpperCase();
+    rolePill.style.display = "";
+
     loginBtn.style.display = "none";
+    signupBtn.style.display = "none";
     logoutBtn.style.display = "";
-    if (authStatus) authStatus.textContent = "Signed in ✅";
-    if (roleStatus) roleStatus.textContent = roles.join(", ") || "employee";
 
-    // admin-only tools
-    if (adminTab) adminTab.style.display = admin ? "" : "none";
+    authStatus.textContent = "Signed in ✅";
+    roleStatus.textContent = role;
 
-    // Server-side login check
+    // Admin tab (UI gate)
+    adminTab.style.display = perms.usersManage ? "" : "none";
+
+    // Backend auth check
     try {
-      const data = await fetchJson("/.netlify/functions/whoami");
-      if (apiStatus) apiStatus.textContent = data?.ok ? "Connected ✅" : "Error";
+      const whoami = await fetchJson("/.netlify/functions/whoami");
+      apiStatus.textContent = whoami.ok ? "Connected ✅" : "Error";
     } catch {
-      if (apiStatus) apiStatus.textContent = "Error";
+      apiStatus.textContent = "Error";
     }
 
-    // If user tries admin tab without admin role, bounce to home
-    const active = document.querySelector(".tab.active")?.dataset.tab;
-    if (active === "admin" && !admin) setPanel("home");
+    // Load allowed data
+    if (perms.appsRead) await loadApplications();
+    if (perms.projectsRead) await loadProjects();
 
-    // load data allowed for all logged-in users
-    await Promise.allSettled([loadApplications(), loadProjects()]);
+    // Prevent non-admin from staying on admin panel
+    const active = document.querySelector(".tab.active")?.dataset.tab;
+    if (active === "admin" && !perms.usersManage) setPanel("home");
   }
 
-  // ---- Init ----
   async function init() {
     await waitForIdentity();
 
-    // Buttons
-    lockedLoginBtn?.addEventListener("click", () => window.netlifyIdentity.open());
-    loginBtn?.addEventListener("click", () => window.netlifyIdentity.open());
-    logoutBtn?.addEventListener("click", () => window.netlifyIdentity.logout());
+    const openLogin = () => window.netlifyIdentity.open("login");
+    const openSignup = () => window.netlifyIdentity.open("signup");
 
-    // Tab switching (block admin tab if not admin)
+    loginBtn.addEventListener("click", openLogin);
+    signupBtn.addEventListener("click", openSignup);
+    lockedLoginBtn.addEventListener("click", openLogin);
+    lockedSignupBtn.addEventListener("click", openSignup);
+    logoutBtn.addEventListener("click", () => window.netlifyIdentity.logout());
+
     tabs.forEach(t => {
       t.addEventListener("click", () => {
         const tab = t.dataset.tab;
         const user = window.netlifyIdentity.currentUser();
+        if (!user) return;
 
-        if (!user) return; // should never happen because shell is hidden, but safe
+        const role = resolveRole(user);
+        const perms = roleToPerms(role);
 
-        if (tab === "admin" && !isAdmin(user)) {
+        if (tab === "admin" && !perms.usersManage) {
           showToast("Admin access required.");
           return;
         }
@@ -246,23 +259,19 @@
       });
     });
 
-    // Refresh buttons
     appsRefresh?.addEventListener("click", loadApplications);
     projectsRefresh?.addEventListener("click", loadProjects);
+    adminCheck?.addEventListener("click", verifyAdminServer);
+    saveProjects?.addEventListener("click", saveProjectsServer);
 
-    // Admin actions
-    adminCheck?.addEventListener("click", verifyAdmin);
-    saveProjects?.addEventListener("click", saveProjectsJson);
-
-    // Identity events
-    window.netlifyIdentity.on("init", syncUi);
+    window.netlifyIdentity.on("init", (user) => user ? unlock(user) : lock());
     window.netlifyIdentity.on("login", (user) => {
       window.netlifyIdentity.close();
-      syncUi(user);
+      unlock(user);
       showToast("Logged in ✅");
     });
     window.netlifyIdentity.on("logout", () => {
-      syncUi(null);
+      lock();
       showToast("Logged out");
     });
 
