@@ -1,15 +1,36 @@
 exports.handler = async (event, context) => {
   const user = context.clientContext && context.clientContext.user;
-  if (!user) return { statusCode: 401, body: JSON.stringify({ ok: false, error: "Not logged in" }) };
 
-  const roles = (user.app_metadata && user.app_metadata.roles) || (user.user_metadata && user.user_metadata.roles) || [];
-  const isAdmin = Array.isArray(roles) && roles.map(r => String(r).toLowerCase()).includes("admin");
+  if (!user) {
+    return json(401, { ok: false, error: "Not logged in" });
+  }
 
-  if (!isAdmin) return { statusCode: 403, body: JSON.stringify({ ok: false, error: "Admin role required" }) };
+  const roles = getRoles(user);
+  const isAdmin = roles.includes("admin");
 
-  return {
-    statusCode: 200,
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ ok: true, admin: true, email: user.email, roles })
-  };
+  if (!isAdmin) {
+    return json(403, { ok: false, error: "Admin role required" });
+  }
+
+  return json(200, {
+    ok: true,
+    admin: true,
+    email: user.email || "",
+    roles
+  });
 };
+
+function getRoles(user) {
+  const rolesA = user?.app_metadata?.roles;
+  const rolesB = user?.user_metadata?.roles;
+  const roles = Array.isArray(rolesA) ? rolesA : Array.isArray(rolesB) ? rolesB : [];
+  return roles.map((r) => String(r).toLowerCase());
+}
+
+function json(statusCode, body) {
+  return {
+    statusCode,
+    headers: { "content-type": "application/json; charset=utf-8" },
+    body: JSON.stringify(body)
+  };
+}

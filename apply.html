@@ -5,193 +5,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FP Digital | NSTYNK Program Application</title>
 
-  <!-- Your existing global theme -->
   <link rel="stylesheet" href="styles.css" />
-  <!-- This page's premium UI layer -->
   <link rel="stylesheet" href="apply.css" />
 
-  <meta name="description" content="Apply to collaborate with FP Digital and the NSTYNK Helmet program: grants, engineering, manufacturing, advisory, and investment." />
+  <meta
+    name="description"
+    content="Apply to collaborate with FP Digital and the NSTYNK Helmet program: grants, engineering, manufacturing, advisory, and investment."
+  />
 </head>
 
 <body>
-  <!-- Keep this nav if it matches your other pages. If your site has a shared header, you can replace with yours. -->
-  <!-- Top Bar -->
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <a class="brand" href="/">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span class="brand-text">
-          <span class="brand-name">FP Digital</span>
-          <span class="brand-sub">Defense-grade systems • Real-time visualization • Edge compute</span>
-        </span>
-      </a>
+  <div class="apply-bg" aria-hidden="true">
+    <div class="orb a"></div>
+    <div class="orb b"></div>
+    <div class="orb c"></div>
+    <div class="noise"></div>
+  </div>
 
-      <nav class="nav">
-        <a href="projects.html">Projects</a>
+  <header class="apply-top">
+    <a class="brand" href="index.html" aria-label="Back to FP Digital home">
+      <span class="mark"></span>
+      <span class="stack">
+        <span class="title">FP Digital</span>
+        <span class="sub">NSTYNK Program Application</span>
+      </span>
+    </a>
 
-        <a href="#topics">Grant Topics</a>
-        <a href="#capabilities">Capabilities</a>
-        <a href="#about">About</a>
-        <a href="#contact" class="btn btn-primary">Contact</a>
-      </nav>
-
-      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
-    </div>
+    <nav class="apply-nav">
+      <a href="projects.html">Projects</a>
+      <a href="employee.html" class="pill">Employee Portal</a>
+    </nav>
   </header>
 
-  <main class="apply-page">
-    <!-- Background effects -->
-    <div class="bg" aria-hidden="true">
-      <div class="orb orb-a"></div>
-      <div class="orb orb-b"></div>
-      <div class="orb orb-c"></div>
-      <div class="noise"></div>
-      <div class="gridlines"></div>
-    </div>
-
-    <section class="apply-hero">
-      <div class="hero-inner">
-        <div class="chip-row">
-          <span class="chip">NSTYNK Helmet</span>
-          <span class="chip">Grant Strategy</span>
-          <span class="chip">Partner Intake</span>
-        </div>
-
-        <h1 class="headline">
-          Program Application
-          <span class="headline-accent">Portal</span>
-        </h1>
-
-        <p class="subhead">
-          Built for serious collaborators — engineering, SBIR/STTR alignment, manufacturing/testing, advisory support, and investment.
-          Fast to complete. High signal for review.
+  <main class="apply-shell">
+    <section class="hero">
+      <div class="card hero-card">
+        <h1>Apply to Build the NSTYNK Program</h1>
+        <p class="muted">
+          Submit an application to collaborate with FP Digital across engineering,
+          grant strategy, manufacturing, advisory, and advanced product development.
         </p>
 
-        <div class="hero-stats">
-          <div class="stat">
-            <div class="stat-k">3–6 min</div>
-            <div class="stat-v">Typical completion</div>
-          </div>
-          <div class="stat">
-            <div class="stat-k">Autosave</div>
-            <div class="stat-v">Restores drafts</div>
-          </div>
-          <div class="stat">
-            <div class="stat-k">Structured</div>
-            <div class="stat-v">Routes correctly</div>
-          </div>
+        <div class="hero-badges">
+          <span class="badge">High-Signal Intake</span>
+          <span class="badge">Engineering + Grants</span>
+          <span class="badge">Netlify Stored</span>
         </div>
-
-        <div class="hero-actions">
-          <a class="btn primary" href="#application">Start application</a>
-          <button type="button" class="btn ghost" id="restoreDraftBtn">Restore last draft</button>
-          <button type="button" class="btn ghost" id="clearDraftBtn">Clear draft</button>
-        </div>
-
-        <p class="tiny muted">
-          Tip: If you want to share a prefilled link, use query params (example below the form).
-        </p>
       </div>
-    </section>
 
-    <section class="apply-shell" id="application">
-      <aside class="apply-aside">
-        <div class="aside-card">
-          <h3>Best-fit applications</h3>
-          <ul class="aside-list">
-            <li><span class="dot"></span>Embedded + sensing (IMU, gas/CBRN, thermal, vision)</li>
-            <li><span class="dot"></span>Optics/imaging & perception AI</li>
-            <li><span class="dot"></span>Visualization engine + edge deployment</li>
-            <li><span class="dot"></span>Sealed respirator system + safety validation</li>
-            <li><span class="dot"></span>SBIR/STTR strategy + partner labs</li>
-          </ul>
-
-          <div class="aside-callout">
-            <div class="badge">High signal</div>
-            <p>
-              Include what you can deliver, timelines, and examples of past work. Specific > long.
+      <div class="card form-card">
+        <div class="card-head">
+          <div>
+            <h2>Application Portal</h2>
+            <p class="muted">
+              Complete all steps. Submissions are stored and available for admin review.
             </p>
           </div>
-        </div>
 
-        <div class="aside-card subtle">
-          <h3>Privacy</h3>
-          <p class="muted">
-            Don’t include sensitive personal info. We use this only to evaluate collaboration.
-          </p>
-        </div>
-      </aside>
-
-      <section class="apply-card">
-        <!-- Progress -->
-        <div class="progress-wrap">
-          <div class="progress-top">
-            <div class="progress-title">
-              <span class="spark" aria-hidden="true"></span>
-              <span id="stepLabel">Step 1 of 3</span>
-            </div>
-
-            <div class="progress-pills" aria-label="Steps">
-              <button type="button" class="pill active" data-step-jump="0">Identity</button>
-              <button type="button" class="pill" data-step-jump="1">Fit</button>
-              <button type="button" class="pill" data-step-jump="2">Details</button>
+          <div class="progress">
+            <span class="muted tiny" id="stepLabel">Step 1 of 4</span>
+            <div class="bar">
+              <div class="fill" id="barFill" style="width:25%;"></div>
             </div>
           </div>
-
-          <div class="progress-bar" aria-hidden="true">
-            <div id="progressFill" class="progress-fill" style="width: 33%"></div>
-          </div>
         </div>
 
-        <!-- FORM -->
         <form
           id="applyForm"
-          class="wizard"
-          action="https://formspree.io/f/YOUR_ID"
+          name="helmet-application"
           method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          action="/thank-you.html"
           novalidate
         >
-          <!-- Honeypot anti-spam -->
-          <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" />
+          <input type="hidden" name="form-name" value="helmet-application" />
 
-          <!-- Hidden metadata -->
+          <p style="display:none;">
+            <label>
+              Don’t fill this out:
+              <input name="bot-field" />
+            </label>
+          </p>
+
           <input type="hidden" name="source" value="FP Digital Application Portal" />
           <input type="hidden" name="page" value="apply.html" />
 
-          <!-- STEP 1 -->
-          <section class="step active" data-step="0">
-            <div class="step-head">
-              <h2>Applicant identity</h2>
-              <p class="muted">Who you are + best way to reach you.</p>
-            </div>
+          <fieldset class="step active" data-step="1">
+            <legend>Identity</legend>
 
-            <div class="grid">
+            <div class="grid-2">
               <div class="field">
-                <label for="name">Full name <span class="req">*</span></label>
+                <label for="name">Full name</label>
                 <input
                   id="name"
                   name="name"
                   type="text"
                   autocomplete="name"
-                  inputmode="text"
                   placeholder="Full name"
                   required
                 />
-                <div class="hint">Browser autofill should work here if you’ve saved your info.</div>
               </div>
 
               <div class="field">
-                <label for="email">Email <span class="req">*</span></label>
+                <label for="email">Email</label>
                 <input
                   id="email"
                   name="email"
                   type="email"
                   autocomplete="email"
-                  inputmode="email"
                   placeholder="name@company.com"
                   required
                 />
-                <div class="hint">Use the email you check the most.</div>
               </div>
 
               <div class="field">
@@ -201,22 +126,23 @@
                   name="phone"
                   type="tel"
                   autocomplete="tel"
-                  inputmode="tel"
                   placeholder="(optional) Phone number"
                 />
               </div>
 
               <div class="field">
-                <label for="org">Organization / Company</label>
+                <label for="organization">Organization / Company</label>
                 <input
-                  id="org"
+                  id="organization"
                   name="organization"
                   type="text"
                   autocomplete="organization"
                   placeholder="Company / Lab / Agency"
                 />
               </div>
+            </div>
 
+            <div class="grid-2">
               <div class="field">
                 <label for="role">Role / Title</label>
                 <input
@@ -228,58 +154,9 @@
                 />
               </div>
 
-              <div class="field full">
-                <label for="linkedin">LinkedIn profile</label>
-                <input
-                  id="linkedin"
-                  name="linkedin"
-                  type="url"
-                  autocomplete="url"
-                  inputmode="url"
-                  placeholder="https://www.linkedin.com/in/your-handle"
-                />
-
-                <div class="quick-actions">
-                  <button type="button" class="mini-btn" id="pasteLinkedInBtn">Paste LinkedIn URL</button>
-                  <button type="button" class="mini-btn" id="prefillFromUrlBtn">Prefill from link</button>
-                  <span class="muted tiny" id="prefillStatus"></span>
-                </div>
-
-                <div class="hint">
-                  Note: true “LinkedIn account autofill” isn’t available on the web for privacy reasons — but browser autofill + prefilled links work great.
-                </div>
-              </div>
-
-              <div class="field full">
-                <label for="site">Website / Portfolio</label>
-                <input
-                  id="site"
-                  name="portfolio"
-                  type="url"
-                  autocomplete="url"
-                  inputmode="url"
-                  placeholder="https://..."
-                />
-              </div>
-            </div>
-
-            <div class="nav-row">
-              <button type="button" class="btn ghost" disabled>Back</button>
-              <button type="button" class="btn primary" data-next>Continue</button>
-            </div>
-          </section>
-
-          <!-- STEP 2 -->
-          <section class="step" data-step="1">
-            <div class="step-head">
-              <h2>Application fit</h2>
-              <p class="muted">What path are you applying for, and where do you plug in?</p>
-            </div>
-
-            <div class="grid">
-              <div class="field full">
-                <label for="type">Application type <span class="req">*</span></label>
-                <select id="type" name="type" required autocomplete="off">
+              <div class="field">
+                <label for="type">Application type</label>
+                <select id="type" name="type" required>
                   <option value="">Select one…</option>
                   <option>Research / Grant Partner</option>
                   <option>Engineering / Technical Collaboration</option>
@@ -289,172 +166,241 @@
                   <option>General Collaboration</option>
                 </select>
               </div>
+            </div>
 
-              <div class="field full">
-                <label>Primary areas (choose all that apply)</label>
-                <div class="checks">
-                  <label class="check"><input type="checkbox" name="areas[]" value="Embedded/Sensors" /> Embedded / Sensors</label>
-                  <label class="check"><input type="checkbox" name="areas[]" value="Optics/Imaging" /> Optics / Imaging</label>
-                  <label class="check"><input type="checkbox" name="areas[]" value="AI/Perception" /> AI / Perception</label>
-                  <label class="check"><input type="checkbox" name="areas[]" value="Visualization/Engine" /> Visualization Engine</label>
-                  <label class="check"><input type="checkbox" name="areas[]" value="Respirator/Sealing" /> Respirator / Sealing</label>
-                  <label class="check"><input type="checkbox" name="areas[]" value="Manufacturing" /> Manufacturing</label>
-                  <label class="check"><input type="checkbox" name="areas[]" value="Testing/Validation" /> Testing / Validation</label>
-                  <label class="check"><input type="checkbox" name="areas[]" value="Funding/Grants" /> Funding / Grants</label>
-                </div>
+            <div class="nav-row">
+              <span></span>
+              <button type="button" class="btn primary" data-next>Continue</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="step" data-step="2">
+            <legend>Links & Areas</legend>
+
+            <div class="grid-2">
+              <div class="field">
+                <label for="linkedin">LinkedIn profile</label>
+                <input
+                  id="linkedin"
+                  name="linkedin"
+                  type="url"
+                  autocomplete="url"
+                  placeholder="https://www.linkedin.com/in/your-handle"
+                />
               </div>
 
-              <div class="field full">
-                <label for="why">Why you / why now? <span class="req">*</span></label>
-                <textarea
-                  id="why"
-                  name="why"
-                  rows="5"
-                  maxlength="900"
-                  placeholder="Be specific: what you can deliver, timelines, and how it aligns with the NSTYNK Helmet + grant strategy."
-                  required
-                ></textarea>
-                <div class="meta">
-                  <span class="hint">Concrete beats vague. Include examples and constraints.</span>
-                  <span class="count"><span data-count-for="why">0</span>/900</span>
-                </div>
+              <div class="field">
+                <label for="portfolio">Website / Portfolio / GitHub</label>
+                <input
+                  id="portfolio"
+                  name="portfolio"
+                  type="url"
+                  autocomplete="url"
+                  placeholder="https://..."
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Primary areas</label>
+              <div class="chips">
+                <label class="chip"><input type="checkbox" name="areas[]" value="Embedded/Sensors" /> Embedded / Sensors</label>
+                <label class="chip"><input type="checkbox" name="areas[]" value="Optics/Imaging" /> Optics / Imaging</label>
+                <label class="chip"><input type="checkbox" name="areas[]" value="AI/Perception" /> AI / Perception</label>
+                <label class="chip"><input type="checkbox" name="areas[]" value="Visualization/Engine" /> Visualization Engine</label>
+                <label class="chip"><input type="checkbox" name="areas[]" value="Respirator/Sealing" /> Respirator / Sealing</label>
+                <label class="chip"><input type="checkbox" name="areas[]" value="Manufacturing" /> Manufacturing</label>
+                <label class="chip"><input type="checkbox" name="areas[]" value="Testing/Validation" /> Testing / Validation</label>
+                <label class="chip"><input type="checkbox" name="areas[]" value="Funding/Grants" /> Funding / Grants</label>
               </div>
             </div>
 
             <div class="nav-row">
-              <button type="button" class="btn ghost" data-back>Back</button>
+              <button type="button" class="btn ghost" data-prev>Back</button>
               <button type="button" class="btn primary" data-next>Continue</button>
             </div>
-          </section>
+          </fieldset>
 
-          <!-- STEP 3 -->
-          <section class="step" data-step="2">
-            <div class="step-head">
-              <h2>Project + grant details</h2>
-              <p class="muted">Help us route your application fast.</p>
+          <fieldset class="step" data-step="3">
+            <legend>Fit</legend>
+
+            <div class="field">
+              <label for="why">Why you / why now?</label>
+              <textarea
+                id="why"
+                name="why"
+                rows="5"
+                placeholder="Be specific: what you can deliver, timelines, and how it aligns with the NSTYNK Helmet + grant strategy."
+                required
+              ></textarea>
             </div>
 
-            <div class="grid">
-              <div class="field full">
-                <label for="grant">Grant / program alignment</label>
-                <textarea
-                  id="grant"
-                  name="grant"
-                  rows="4"
-                  maxlength="700"
-                  placeholder="If applicable: agencies (DoD/DHS/NIH/NSF), SBIR/STTR alignment, topic ideas/IDs, solicitation timing, and your proposed role."
-                ></textarea>
-                <div class="meta">
-                  <span class="hint">If you know topic IDs, include them.</span>
-                  <span class="count"><span data-count-for="grant">0</span>/700</span>
-                </div>
-              </div>
+            <div class="field">
+              <label for="grant">Grant / program alignment</label>
+              <textarea
+                id="grant"
+                name="grant"
+                rows="4"
+                placeholder="If applicable: agencies, SBIR/STTR alignment, topic ideas, solicitation timing, and your proposed role."
+              ></textarea>
+            </div>
 
-              <div class="field full">
+            <div class="nav-row">
+              <button type="button" class="btn ghost" data-prev>Back</button>
+              <button type="button" class="btn primary" data-next>Continue</button>
+            </div>
+          </fieldset>
+
+          <fieldset class="step" data-step="4">
+            <legend>Details</legend>
+
+            <div class="grid-2">
+              <div class="field">
                 <label for="resources">Resources / capabilities</label>
                 <textarea
                   id="resources"
                   name="resources"
                   rows="4"
-                  maxlength="700"
-                  placeholder="Facilities, manufacturing capacity, testing labs, funding, certifications, or your team capability."
+                  placeholder="Facilities, manufacturing capacity, funding, certifications, or team capability."
                 ></textarea>
-                <div class="meta">
-                  <span class="hint">Mention equipment + throughput + lead times.</span>
-                  <span class="count"><span data-count-for="resources">0</span>/700</span>
-                </div>
               </div>
 
               <div class="field">
                 <label for="timeline">Preferred timeline</label>
-                <select id="timeline" name="timeline" autocomplete="off">
-                  <option value="">Select…</option>
-                  <option>Immediately (0–30 days)</option>
-                  <option>Near-term (1–3 months)</option>
-                  <option>Mid-term (3–6 months)</option>
-                  <option>Long-term (6+ months)</option>
-                </select>
+                <textarea
+                  id="timeline"
+                  name="timeline"
+                  rows="4"
+                  placeholder="Immediately, near-term, mid-term, long-term..."
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label for="budget">Budget / support range</label>
+                <input
+                  id="budget"
+                  name="budget"
+                  type="text"
+                  placeholder="In-kind, $10k–$50k, $250k+, etc."
+                />
               </div>
 
               <div class="field">
-                <label for="budget">Budget / support range</label>
-                <select id="budget" name="budget" autocomplete="off">
-                  <option value="">Select…</option>
-                  <option>In-kind / no budget</option>
-                  <option>$1k–$10k</option>
-                  <option>$10k–$50k</option>
-                  <option>$50k–$250k</option>
-                  <option>$250k+</option>
-                </select>
-              </div>
-
-              <div class="field full">
                 <label for="notes">Extra notes</label>
-                <textarea
+                <input
                   id="notes"
                   name="notes"
-                  rows="4"
-                  maxlength="700"
-                  placeholder="Anything else that helps evaluate fit. Links to demos, papers, repos, or prior contracts are great."
-                ></textarea>
-                <div class="meta">
-                  <span class="hint">Optional.</span>
-                  <span class="count"><span data-count-for="notes">0</span>/700</span>
-                </div>
+                  type="text"
+                  placeholder="Links, constraints, special notes..."
+                />
               </div>
+            </div>
 
-              <div class="field full">
-                <label class="check consent">
-                  <input type="checkbox" name="consent" required />
-                  <span>I confirm the information submitted is accurate. <span class="req">*</span></span>
-                </label>
-              </div>
+            <div class="field">
+              <label class="chip" style="justify-content:flex-start;">
+                <input type="checkbox" name="consent" value="yes" required />
+                I confirm the information submitted is accurate.
+              </label>
             </div>
 
             <div class="nav-row">
-              <button type="button" class="btn ghost" data-back>Back</button>
-              <button type="submit" class="btn primary" id="submitBtn">Submit application</button>
+              <button type="button" class="btn ghost" data-prev>Back</button>
+              <button type="submit" class="btn primary">Submit Application</button>
             </div>
-
-            <div class="fineprint">
-              <p class="muted tiny">
-                Want a prefilled link? Example:
-                <code>apply.html?name=Jane%20Doe&email=jane%40mail.com&org=Acme&role=Engineer&linkedin=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fjane</code>
-              </p>
-            </div>
-          </section>
-
-          <!-- Form status -->
-          <div class="form-status" id="formStatus" aria-live="polite"></div>
+          </fieldset>
         </form>
-      </section>
+      </div>
     </section>
 
-    <footer class="apply-footer">
-      <div class="footer-grid">
-  <div class="footer-col">
-    <h4>Company</h4>
-    <a href="projects.html">Projects</a>
-    <a href="helmet.html">NSTYNK Helmet</a>
-  </div>
+    <aside class="side">
+      <div class="card side-card">
+        <h3>Best-fit applications</h3>
+        <ol class="muted">
+          <li>Embedded systems & sensing</li>
+          <li>Visualization engine and edge computing</li>
+          <li>Manufacturing & validation support</li>
+          <li>Grant strategy and proposal partnerships</li>
+        </ol>
+      </div>
 
-  <div class="footer-col">
-    <h4>Careers</h4>
-    <a href="apply.html">Apply</a>
-    <a href="apply.html#application">Open Programs</a>
-    <a href="apply.html?type=Engineering%20/%20Technical%20Collaboration">Engineering</a>
-    <a href="apply.html?type=Research%20/%20Grant%20Partner">Grant Partners</a>
-  </div>
-
-  <div class="footer-col">
-    <h4>Contact</h4>
-    <a href="mailto:YOUR_EMAIL@DOMAIN.com">Email</a>
-    <a href="apply.html">Partnership Portal</a>
-  </div>
-</div>
-    </footer>
+      <div class="card side-card">
+        <h3>Employee access</h3>
+        <p class="muted">
+          Internal review tools are available through the employee portal.
+        </p>
+        <a class="btn ghost" href="employee.html">Employee Portal</a>
+      </div>
+    </aside>
   </main>
 
-  <script src="apply.js"></script>
+  <footer class="apply-footer">
+    <div class="muted tiny">© <span id="year"></span> FP Digital</div>
+    <div class="links">
+      <a href="projects.html">Projects</a>
+      <a href="employee.html">Employee Portal</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const form = document.getElementById("applyForm");
+    const steps = Array.from(document.querySelectorAll(".step"));
+    const nextBtns = Array.from(document.querySelectorAll("[data-next]"));
+    const prevBtns = Array.from(document.querySelectorAll("[data-prev]"));
+    const stepLabel = document.getElementById("stepLabel");
+    const barFill = document.getElementById("barFill");
+
+    let current = 0;
+
+    function renderStep() {
+      steps.forEach((step, index) => {
+        step.classList.toggle("active", index === current);
+      });
+
+      const stepNum = current + 1;
+      stepLabel.textContent = `Step ${stepNum} of ${steps.length}`;
+      barFill.style.width = `${(stepNum / steps.length) * 100}%`;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function validateCurrentStep() {
+      const activeStep = steps[current];
+      const requiredFields = Array.from(activeStep.querySelectorAll("[required]"));
+
+      for (const field of requiredFields) {
+        if (field.type === "checkbox") {
+          if (!field.checked) {
+            field.focus();
+            return false;
+          }
+        } else if (!field.value.trim()) {
+          field.focus();
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    nextBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!validateCurrentStep()) return;
+        if (current < steps.length - 1) current += 1;
+        renderStep();
+      });
+    });
+
+    prevBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (current > 0) current -= 1;
+        renderStep();
+      });
+    });
+
+    renderStep();
+  </script>
 </body>
 </html>

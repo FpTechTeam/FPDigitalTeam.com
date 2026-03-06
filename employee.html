@@ -4,14 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>FP Digital | Employee Portal</title>
+  <meta name="robots" content="noindex,nofollow" />
 
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="employee.css" />
 
-  <meta name="robots" content="noindex,nofollow" />
   <script defer src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
-
 <body>
   <div class="portal-bg" aria-hidden="true">
     <div class="orb a"></div>
@@ -23,7 +22,7 @@
   <header class="portal-top">
     <a class="brand" href="index.html" aria-label="Back to FP Digital">
       <div class="mark"></div>
-      <div>
+      <div class="brand-copy">
         <div class="title">FP Digital</div>
         <div class="sub">Employee Portal</div>
       </div>
@@ -31,151 +30,190 @@
 
     <div class="top-actions">
       <div class="who" id="who">Not signed in</div>
-      <span class="pill" id="rolePill" style="display:none;">role</span>
+      <span class="role-pill" id="rolePill" style="display:none;">EMPLOYEE</span>
 
-      <button class="btn primary" id="loginBtn">Login</button>
-      <button class="btn ghost" id="signupBtn">Sign Up</button>
-      <button class="btn ghost" id="logoutBtn" style="display:none;">Logout</button>
+      <button class="btn primary" id="loginBtn" type="button">Login</button>
+      <button class="btn ghost" id="signupBtn" type="button">Sign Up</button>
+      <button class="btn ghost" id="logoutBtn" type="button" style="display:none;">Logout</button>
     </div>
   </header>
 
-  <!-- LOCKED VIEW -->
   <section class="locked" id="locked">
-    <div class="card locked-card">
-      <h1>Secure Employee Portal</h1>
+    <div class="glass-card locked-card">
+      <div class="locked-badge">Secure Access</div>
+      <h1>FP Digital Internal Portal</h1>
       <p class="muted">
-        Sign in to access internal tools. Access is restricted by role.
+        Sign in to access employee tools, project visibility, and application review workflows.
       </p>
 
       <div class="locked-actions">
-        <button class="btn primary" id="lockedLoginBtn">Login</button>
-        <button class="btn ghost" id="lockedSignupBtn">Sign Up</button>
+        <button class="btn primary" id="lockedLoginBtn" type="button">Login</button>
+        <button class="btn ghost" id="lockedSignupBtn" type="button">Sign Up</button>
       </div>
 
-      <div class="muted tiny" style="margin-top:12px;">
-        If signup is invite-only, request access from an administrator.
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="muted tiny">
-        <strong>Roles:</strong> employee / developer / admin. Admin tools are invisible and blocked unless authorized.
+      <div class="locked-grid">
+        <div class="mini-stat">
+          <div class="mini-k">Employees</div>
+          <div class="mini-v">View tools</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-k">Developers</div>
+          <div class="mini-v">Project access</div>
+        </div>
+        <div class="mini-stat">
+          <div class="mini-k">Admins</div>
+          <div class="mini-v">Review + manage</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- PORTAL (HIDDEN UNTIL LOGIN) -->
   <main class="portal-shell" id="shell" style="display:none;">
     <aside class="sidebar">
-      <button class="tab active" data-tab="home"><span class="dot"></span> Home</button>
-      <button class="tab" data-tab="applications"><span class="dot teal"></span> Applications</button>
-      <button class="tab" data-tab="projects"><span class="dot purple"></span> Projects</button>
-
-      <button class="tab" data-tab="admin" id="adminTab" style="display:none;">
-        <span class="dot red"></span> Admin
+      <button class="tab active" data-panel="dashboard" type="button">
+        <span class="tab-dot"></span>
+        Dashboard
       </button>
 
-      <a class="backlink" href="index.html">← Back to site</a>
+      <button class="tab" data-panel="projects" type="button">
+        <span class="tab-dot teal"></span>
+        Projects
+      </button>
+
+      <button class="tab" data-panel="applications" id="applicationsTab" type="button">
+        <span class="tab-dot purple"></span>
+        Applications
+      </button>
+
+      <button class="tab" data-panel="admin" id="adminTab" type="button" style="display:none;">
+        <span class="tab-dot red"></span>
+        Admin Tools
+      </button>
+
+      <a class="back-link" href="index.html">← Back to site</a>
     </aside>
 
-    <section class="content">
-      <section class="panel active" id="panel-home">
-        <div class="card">
-          <h1>Welcome</h1>
-          <p class="muted">Your role controls what you can view or modify.</p>
+    <section class="portal-content">
+      <section class="panel active" id="panel-dashboard">
+        <div class="glass-card">
+          <div class="section-head">
+            <div>
+              <h2>Dashboard</h2>
+              <p class="muted">Your role controls what is visible and what actions are allowed.</p>
+            </div>
+          </div>
 
-          <div class="grid">
-            <div class="mini"><div class="k">Authentication</div><div class="v" id="authStatus">—</div></div>
-            <div class="mini"><div class="k">Role</div><div class="v" id="roleStatus">—</div></div>
-            <div class="mini"><div class="k">Backend</div><div class="v" id="apiStatus">—</div></div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-k">Auth</div>
+              <div class="stat-v" id="authStatus">Signed out</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-k">Role</div>
+              <div class="stat-v" id="roleStatus">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-k">Applications</div>
+              <div class="stat-v" id="appsPermission">Hidden</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-k">Admin</div>
+              <div class="stat-v" id="adminStatus">No access</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-projects">
+        <div class="glass-card">
+          <div class="section-head">
+            <div>
+              <h2>Projects</h2>
+              <p class="muted">Visible to employees and developers. Admins can later get editing tools here.</p>
+            </div>
+            <div class="section-actions">
+              <button class="btn ghost" id="refreshProjectsBtn" type="button">Refresh</button>
+            </div>
+          </div>
+
+          <div class="project-list" id="projectsList">
+            <div class="empty-state">No project data loaded yet.</div>
           </div>
         </div>
       </section>
 
       <section class="panel" id="panel-applications">
-        <div class="card">
-          <div class="card-head">
+        <div class="glass-card">
+          <div class="section-head">
             <div>
               <h2>Applications</h2>
-              <p class="muted">Visible to logged-in users. Admin can manage.</p>
+              <p class="muted">Admins can review submissions. Other roles can be limited or hidden.</p>
             </div>
-            <div class="actions">
-              <button class="btn ghost" id="appsRefresh">Refresh</button>
+            <div class="section-actions">
+              <button class="btn ghost" id="refreshAppsBtn" type="button">Refresh</button>
             </div>
           </div>
 
           <div class="table-wrap">
-            <table class="table">
+            <table class="app-table">
               <thead>
-                <tr><th>Date</th><th>Name</th><th>Email</th><th>Type</th><th>Status</th></tr>
+                <tr>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                </tr>
               </thead>
-              <tbody id="appsBody">
-                <tr><td colspan="5" class="muted">Loading…</td></tr>
+              <tbody id="applicationsBody">
+                <tr>
+                  <td colspan="5" class="empty-row">No applications loaded.</td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <section class="panel" id="panel-projects">
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <h2>Projects</h2>
-              <p class="muted">Developers can view. Admin can edit.</p>
-            </div>
-            <div class="actions">
-              <button class="btn ghost" id="projectsRefresh">Refresh</button>
-            </div>
-          </div>
-
-          <div class="list" id="projectsList">
-            <div class="muted">Loading…</div>
-          </div>
-        </div>
-      </section>
-
       <section class="panel" id="panel-admin">
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <h2>Admin Tools</h2>
-              <p class="muted">Restricted to admin role.</p>
+        <div class="admin-layout">
+          <div class="glass-card">
+            <div class="section-head">
+              <div>
+                <h2>Admin Review</h2>
+                <p class="muted">Review applications, change status, and add notes.</p>
+              </div>
+              <div class="section-actions">
+                <button class="btn ghost" id="verifyAdminBtn" type="button">Verify Access</button>
+              </div>
             </div>
-            <div class="actions">
-              <button class="btn ghost" id="adminCheck">Verify</button>
-            </div>
+
+            <pre class="admin-code" id="adminOutput">{}</pre>
           </div>
 
-          <div class="admin-grid">
-            <div class="admin-card">
-              <h3>Access</h3>
-              <p class="muted">Server-side verification response.</p>
-              <pre class="code" id="adminOut">{}</pre>
+          <div class="glass-card">
+            <div class="section-head">
+              <div>
+                <h2>Project JSON</h2>
+                <p class="muted">Reserved for future admin-side project updates.</p>
+              </div>
             </div>
 
-            <div class="admin-card">
-              <h3>Projects Editor</h3>
-              <p class="muted">Admin-only write actions.</p>
+            <label class="field-label" for="projectsJson">Projects JSON</label>
+            <textarea id="projectsJson" class="portal-textarea" rows="10" placeholder='[{"title":"NSTYNK Helmet","subtitle":"Advanced system"}]'></textarea>
 
-              <div class="field">
-                <label>Projects JSON</label>
-                <textarea id="projectsJson" rows="10" placeholder='[{"title":"NSTYNK Helmet","subtitle":"..."}]'></textarea>
-              </div>
-
-              <div class="actions">
-                <button class="btn primary" id="saveProjects">Save</button>
-              </div>
-
-              <div class="muted tiny" id="saveMsg"></div>
+            <div class="admin-actions">
+              <button class="btn primary" id="saveProjectsBtn" type="button">Save Projects</button>
             </div>
+
+            <div class="save-msg" id="saveMsg"></div>
           </div>
         </div>
       </section>
-
-      <div class="toast" id="toast" aria-live="polite"></div>
     </section>
   </main>
+
+  <div class="toast" id="toast"></div>
 
   <script src="employee.js"></script>
 </body>

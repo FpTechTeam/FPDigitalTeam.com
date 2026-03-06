@@ -10,77 +10,48 @@
   const loginBtn = $("loginBtn");
   const signupBtn = $("signupBtn");
   const logoutBtn = $("logoutBtn");
-
   const lockedLoginBtn = $("lockedLoginBtn");
   const lockedSignupBtn = $("lockedSignupBtn");
 
   const authStatus = $("authStatus");
   const roleStatus = $("roleStatus");
-  const apiStatus = $("apiStatus");
+  const appsPermission = $("appsPermission");
+  const adminStatus = $("adminStatus");
 
   const adminTab = $("adminTab");
+  const applicationsTab = $("applicationsTab");
+
+  const refreshProjectsBtn = $("refreshProjectsBtn");
+  const refreshAppsBtn = $("refreshAppsBtn");
+  const verifyAdminBtn = $("verifyAdminBtn");
+  const saveProjectsBtn = $("saveProjectsBtn");
+
+  const projectsList = $("projectsList");
+  const applicationsBody = $("applicationsBody");
+  const adminOutput = $("adminOutput");
+  const projectsJson = $("projectsJson");
+  const saveMsg = $("saveMsg");
   const toast = $("toast");
 
   const tabs = Array.from(document.querySelectorAll(".tab"));
   const panels = {
-    home: $("panel-home"),
-    applications: $("panel-applications"),
+    dashboard: $("panel-dashboard"),
     projects: $("panel-projects"),
-    admin: $("panel-admin"),
+    applications: $("panel-applications"),
+    admin: $("panel-admin")
   };
 
-  const appsBody = $("appsBody");
-  const appsRefresh = $("appsRefresh");
-
-  const projectsList = $("projectsList");
-  const projectsRefresh = $("projectsRefresh");
-
-  const adminCheck = $("adminCheck");
-  const adminOut = $("adminOut");
-
-  const projectsJson = $("projectsJson");
-  const saveProjects = $("saveProjects");
-  const saveMsg = $("saveMsg");
-
   function showToast(msg) {
-    if (!toast) return;
     toast.textContent = msg;
     toast.classList.add("show");
     setTimeout(() => toast.classList.remove("show"), 2200);
   }
 
-  function esc(s) {
-    return String(s ?? "").replace(/[&<>"']/g, (m) => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-    }[m]));
-  }
-
-  function setPanel(name) {
-    Object.values(panels).forEach(p => p?.classList.remove("active"));
-    panels[name]?.classList.add("active");
-    tabs.forEach(t => t.classList.toggle("active", t.dataset.tab === name));
-  }
-
-  function waitForIdentity() {
-    return new Promise((resolve) => {
-      const tick = () => (window.netlifyIdentity ? resolve() : setTimeout(tick, 50));
-      tick();
-    });
-  }
-
   function getRoles(user) {
-    const rolesA = user?.app_metadata?.roles;
-    const rolesB = user?.user_metadata?.roles;
-    const roles = Array.isArray(rolesA) ? rolesA : Array.isArray(rolesB) ? rolesB : [];
+    const a = user?.app_metadata?.roles;
+    const b = user?.user_metadata?.roles;
+    const roles = Array.isArray(a) ? a : Array.isArray(b) ? b : [];
     return roles.map(r => String(r).toLowerCase());
-  }
-
-  // Permission model (easy to expand)
-  function roleToPerms(role) {
-    const r = String(role || "employee").toLowerCase();
-    if (r === "admin") return { appsRead:true, appsWrite:true, projectsRead:true, projectsWrite:true, usersManage:true };
-    if (r === "developer") return { appsRead:true, appsWrite:false, projectsRead:true, projectsWrite:false, usersManage:false };
-    return { appsRead:true, appsWrite:false, projectsRead:true, projectsWrite:false, usersManage:false };
   }
 
   function resolveRole(user) {
@@ -90,90 +61,57 @@
     return "employee";
   }
 
-  async function fetchJson(url, options) {
+  function getPermissions(role) {
+    if (role === "admin") {
+      return {
+        projectsView: true,
+        applicationsView: true,
+        applicationsReview: true,
+        adminView: true
+      };
+    }
+    if (role === "developer") {
+      return {
+        projectsView: true,
+        applicationsView: false,
+        applicationsReview: false,
+        adminView: false
+      };
+    }
+    return {
+      projectsView: true,
+      applicationsView: false,
+      applicationsReview: false,
+      adminView: false
+    };
+  }
+
+  function setPanel(name) {
+    Object.values(panels).forEach(p => p.classList.remove("active"));
+    panels[name].classList.add("active");
+    tabs.forEach(tab => tab.classList.toggle("active", tab.dataset.panel === name));
+  }
+
+  function waitForIdentity() {
+    return new Promise((resolve) => {
+      const check = () => window.netlifyIdentity ? resolve() : setTimeout(check, 50);
+      check();
+    });
+  }
+
+  async function fetchJson(url, options = {}) {
     const res = await fetch(url, {
-      headers: { accept: "application/json", ...(options?.headers || {}) },
+      headers: { accept: "application/json", ...(options.headers || {}) },
       ...options
     });
     const text = await res.text();
     let data = {};
     try { data = text ? JSON.parse(text) : {}; } catch { data = { raw: text }; }
-    if (!res.ok) throw new Error(data?.error || `${res.status} ${url}`);
+    if (!res.ok) throw new Error(data.error || `${res.status} ${url}`);
     return data;
   }
 
-  async function loadApplications() {
-    if (!appsBody) return;
-    appsBody.innerHTML = `<tr><td colspan="5" class="muted">Loading…</td></tr>`;
-    try {
-      const data = await fetchJson("/.netlify/functions/applications-list");
-      const items = data.items || [];
-      appsBody.innerHTML = items.map(a => `
-        <tr>
-          <td>${esc((a.created_at || "").slice(0,10))}</td>
-          <td>${esc(a.name || "")}</td>
-          <td>${esc(a.email || "")}</td>
-          <td>${esc(a.type || "")}</td>
-          <td>${esc(a.status || "new")}</td>
-        </tr>
-      `).join("") || `<tr><td colspan="5" class="muted">No applications yet.</td></tr>`;
-    } catch (e) {
-      appsBody.innerHTML = `<tr><td colspan="5" class="muted">Failed to load.</td></tr>`;
-      showToast("Applications failed");
-    }
-  }
-
-  async function loadProjects() {
-    if (!projectsList) return;
-    projectsList.innerHTML = `<div class="muted">Loading…</div>`;
-    try {
-      const data = await fetchJson("/.netlify/functions/projects-get");
-      const items = data.items || [];
-      projectsList.innerHTML = items.map(p => `
-        <div class="item">
-          <div class="t">${esc(p.title || "")}</div>
-          <div class="s">${esc(p.subtitle || "")}</div>
-        </div>
-      `).join("") || `<div class="muted">No projects found.</div>`;
-    } catch {
-      projectsList.innerHTML = `<div class="muted">Failed to load.</div>`;
-      showToast("Projects failed");
-    }
-  }
-
-  async function verifyAdminServer() {
-    if (!adminOut) return;
-    adminOut.textContent = "{}";
-    try {
-      const data = await fetchJson("/.netlify/functions/admin-check");
-      adminOut.textContent = JSON.stringify(data, null, 2);
-      showToast("Admin verified ✅");
-    } catch (e) {
-      adminOut.textContent = JSON.stringify({ ok:false, error: String(e.message || e) }, null, 2);
-      showToast("Admin check failed");
-    }
-  }
-
-  async function saveProjectsServer() {
-    saveMsg.textContent = "";
-    try {
-      const parsed = JSON.parse(projectsJson.value || "[]");
-      const data = await fetchJson("/.netlify/functions/projects-update", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ items: parsed })
-      });
-      saveMsg.textContent = "Saved ✅";
-      showToast("Projects saved ✅");
-      await loadProjects();
-      return data;
-    } catch (e) {
-      saveMsg.textContent = `Save failed: ${String(e.message || e)}`;
-      showToast("Save failed");
-    }
-  }
-
-  function lock() {
+  function lockPortal() {
     shell.style.display = "none";
     locked.style.display = "grid";
 
@@ -186,20 +124,22 @@
 
     authStatus.textContent = "Signed out";
     roleStatus.textContent = "—";
-    apiStatus.textContent = "—";
+    appsPermission.textContent = "Hidden";
+    adminStatus.textContent = "No access";
 
     adminTab.style.display = "none";
-    setPanel("home");
+    applicationsTab.style.display = "none";
+    setPanel("dashboard");
   }
 
-  async function unlock(user) {
+  async function unlockPortal(user) {
+    const role = resolveRole(user);
+    const perms = getPermissions(role);
+
     shell.style.display = "";
     locked.style.display = "none";
 
-    const role = resolveRole(user);
-    const perms = roleToPerms(role);
-
-    who.textContent = user.email;
+    who.textContent = user.email || "Signed in";
     rolePill.textContent = role.toUpperCase();
     rolePill.style.display = "";
 
@@ -207,27 +147,114 @@
     signupBtn.style.display = "none";
     logoutBtn.style.display = "";
 
-    authStatus.textContent = "Signed in ✅";
+    authStatus.textContent = "Signed in";
     roleStatus.textContent = role;
+    appsPermission.textContent = perms.applicationsView ? "Visible" : "Hidden";
+    adminStatus.textContent = perms.adminView ? "Admin access" : "No access";
 
-    // Admin tab (UI gate)
-    adminTab.style.display = perms.usersManage ? "" : "none";
+    applicationsTab.style.display = perms.applicationsView ? "" : "none";
+    adminTab.style.display = perms.adminView ? "" : "none";
 
-    // Backend auth check
-    try {
-      const whoami = await fetchJson("/.netlify/functions/whoami");
-      apiStatus.textContent = whoami.ok ? "Connected ✅" : "Error";
-    } catch {
-      apiStatus.textContent = "Error";
+    if (!perms.adminView && panels.admin.classList.contains("active")) setPanel("dashboard");
+    if (!perms.applicationsView && panels.applications.classList.contains("active")) setPanel("dashboard");
+
+    await loadProjects();
+
+    if (perms.applicationsView) {
+      await loadApplications();
+    } else {
+      applicationsBody.innerHTML = `<tr><td colspan="5" class="empty-row">Applications hidden for this role.</td></tr>`;
     }
+  }
 
-    // Load allowed data
-    if (perms.appsRead) await loadApplications();
-    if (perms.projectsRead) await loadProjects();
+  async function loadProjects() {
+    try {
+      const data = await fetchJson("/.netlify/functions/projects-get");
+      const items = data.items || [];
+      if (!items.length) {
+        projectsList.innerHTML = `<div class="empty-state">No projects found.</div>`;
+        return;
+      }
 
-    // Prevent non-admin from staying on admin panel
-    const active = document.querySelector(".tab.active")?.dataset.tab;
-    if (active === "admin" && !perms.usersManage) setPanel("home");
+      projectsList.innerHTML = items.map(p => `
+        <div class="project-card">
+          <div class="project-title">${escapeHtml(p.title || "")}</div>
+          <div class="project-sub">${escapeHtml(p.subtitle || "")}</div>
+        </div>
+      `).join("");
+    } catch (e) {
+      projectsList.innerHTML = `<div class="empty-state">Failed to load projects.</div>`;
+      showToast("Projects failed");
+    }
+  }
+
+  async function loadApplications() {
+    try {
+      const data = await fetchJson("/.netlify/functions/applications-list");
+      const items = data.items || [];
+      if (!items.length) {
+        applicationsBody.innerHTML = `<tr><td colspan="5" class="empty-row">No applications found.</td></tr>`;
+        return;
+      }
+
+      applicationsBody.innerHTML = items.map(a => `
+        <tr>
+          <td>${escapeHtml((a.created_at || "").slice(0, 10))}</td>
+          <td>${escapeHtml(a.name || "")}</td>
+          <td>${escapeHtml(a.email || "")}</td>
+          <td>${escapeHtml(a.type || "")}</td>
+          <td><span class="status-pill ${statusClass(a.status)}">${escapeHtml(a.status || "new")}</span></td>
+        </tr>
+      `).join("");
+    } catch (e) {
+      applicationsBody.innerHTML = `<tr><td colspan="5" class="empty-row">Failed to load applications.</td></tr>`;
+      showToast("Applications failed");
+    }
+  }
+
+  async function verifyAdmin() {
+    try {
+      const data = await fetchJson("/.netlify/functions/admin-check");
+      adminOutput.textContent = JSON.stringify(data, null, 2);
+      showToast("Admin verified");
+    } catch (e) {
+      adminOutput.textContent = JSON.stringify({ ok: false, error: String(e.message || e) }, null, 2);
+      showToast("Admin check failed");
+    }
+  }
+
+  async function saveProjects() {
+    saveMsg.textContent = "";
+    try {
+      const parsed = JSON.parse(projectsJson.value || "[]");
+      await fetchJson("/.netlify/functions/projects-update", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: parsed })
+      });
+      saveMsg.textContent = "Projects saved successfully.";
+      showToast("Projects saved");
+      await loadProjects();
+    } catch (e) {
+      saveMsg.textContent = `Save failed: ${String(e.message || e)}`;
+      showToast("Save failed");
+    }
+  }
+
+  function statusClass(status) {
+    const s = String(status || "new").toLowerCase();
+    if (["reviewing", "approved", "rejected", "new"].includes(s)) return s;
+    return "new";
+  }
+
+  function escapeHtml(s) {
+    return String(s ?? "").replace(/[&<>"']/g, m => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      "\"":"&quot;",
+      "'":"&#039;"
+    }[m]));
   }
 
   async function init() {
@@ -242,36 +269,41 @@
     lockedSignupBtn.addEventListener("click", openSignup);
     logoutBtn.addEventListener("click", () => window.netlifyIdentity.logout());
 
-    tabs.forEach(t => {
-      t.addEventListener("click", () => {
-        const tab = t.dataset.tab;
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
         const user = window.netlifyIdentity.currentUser();
         if (!user) return;
 
-        const role = resolveRole(user);
-        const perms = roleToPerms(role);
+        const perms = getPermissions(resolveRole(user));
+        const panel = tab.dataset.panel;
 
-        if (tab === "admin" && !perms.usersManage) {
-          showToast("Admin access required.");
+        if (panel === "applications" && !perms.applicationsView) {
+          showToast("No application access");
           return;
         }
-        setPanel(tab);
+
+        if (panel === "admin" && !perms.adminView) {
+          showToast("Admin access required");
+          return;
+        }
+
+        setPanel(panel);
       });
     });
 
-    appsRefresh?.addEventListener("click", loadApplications);
-    projectsRefresh?.addEventListener("click", loadProjects);
-    adminCheck?.addEventListener("click", verifyAdminServer);
-    saveProjects?.addEventListener("click", saveProjectsServer);
+    refreshProjectsBtn?.addEventListener("click", loadProjects);
+    refreshAppsBtn?.addEventListener("click", loadApplications);
+    verifyAdminBtn?.addEventListener("click", verifyAdmin);
+    saveProjectsBtn?.addEventListener("click", saveProjects);
 
-    window.netlifyIdentity.on("init", (user) => user ? unlock(user) : lock());
+    window.netlifyIdentity.on("init", (user) => user ? unlockPortal(user) : lockPortal());
     window.netlifyIdentity.on("login", (user) => {
       window.netlifyIdentity.close();
-      unlock(user);
-      showToast("Logged in ✅");
+      unlockPortal(user);
+      showToast("Logged in");
     });
     window.netlifyIdentity.on("logout", () => {
-      lock();
+      lockPortal();
       showToast("Logged out");
     });
 

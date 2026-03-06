@@ -1,9 +1,39 @@
+[
+  {
+    "title": "NSTYNK Helmet",
+    "subtitle": "Advanced wearable system"
+  },
+  {
+    "title": "Grant Strategy",
+    "subtitle": "SBIR/STTR and research pipeline"
+  }
+]
+
+const path = require("path");
+const fs = require("fs");
+
 exports.handler = async () => {
-  // Serve a simple static JSON file from your deployed site.
-  // You can later move this to a database.
-  return {
-    statusCode: 200,
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ ok: true, items: [] })
-  };
+  try {
+    const filePath = path.join(process.cwd(), "data", "projects.json");
+    const raw = fs.readFileSync(filePath, "utf8");
+    const items = JSON.parse(raw);
+
+    return json(200, {
+      ok: true,
+      items: Array.isArray(items) ? items : []
+    });
+  } catch (error) {
+    return json(500, {
+      ok: false,
+      error: "Could not load project data"
+    });
+  }
 };
+
+function json(statusCode, body) {
+  return {
+    statusCode,
+    headers: { "content-type": "application/json; charset=utf-8" },
+    body: JSON.stringify(body)
+  };
+}
