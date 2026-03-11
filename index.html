@@ -38,16 +38,20 @@
 
       <nav class="nav">
         <a href="projects.html">Projects</a>
-
-        <a href="#topics">Grant Topics</a>
-        <a href="#capabilities">Capabilities</a>
-        <a href="#about">About</a>
-        <a href="#contact" class="btn btn-primary">Contact</a>
+        <a href="apply.html">Apply</a>
+        <a href="employee.html">Employee Portal</a>
+        <div class="auth-buttons">
+          <button id="loginBtn" class="nav-btn">Login</button>
+          <button id="logoutBtn" class="nav-btn" style="display:none;">Logout</button>
+        </div>
       </nav>
 
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
     </div>
   </header>
+
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script src="auth.js"></script>
 
   <!-- HERO -->
   <main>

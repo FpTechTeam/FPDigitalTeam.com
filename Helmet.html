@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FP Digital | Defense-Grade Software & Innovation</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="/favicon.ico?v=2" sizes="any">
+  <link rel="shortcut icon" href="/favicon.ico?v=2">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png?v=2">
+  <link rel="stylesheet" href="/styles.css" />
+  <base href="/" />
+</head>
+
+<body>
+
+
+    <!-- Video Background (keep your file) -->
+  <div class="video-bg" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="metadata" class="bg-video">
+      <source src="/fp-digital-tech-loop.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+  </div
+
+    <footer class="footer">
+     <div class="container footer-inner">
+      <div class="footer-left">
+        <div class="footer-brand">FP Digital</div>
+        <div class="footer-sub">Software • Embedded Systems • Connected Devices</div>
+      </div>
+      <div class="footer-right">
+        <a href="#home">Top</a>
+        <a href="#projects">Projects</a>
+        <a href="#topics">Grant Topics</a>
+        <a href="#contact">Contact</a>
+      </div>
+     </div>
+    </footer>
+
+    <div class="container footer-bottom">
+      <span>© 2026 FP Digital. All rights reserved.</span>
+      <span class="sep">•</span>
+      <span>Built for clarity and review speed.</span>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    const btn = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('.nav');
+    if (btn && nav) {
+      btn.addEventListener('click', () => {
+        const open = nav.classList.toggle('is-open');
+        btn.setAttribute('aria-expanded', String(open));
+      });
+    }
+
+    // Topic filter
+    const filters = document.querySelectorAll('.filter');
+    const topics = document.querySelectorAll('.topic');
+    filters.forEach(f => f.addEventListener('click', () => {
+      filters.forEach(x => x.classList.remove('is-active'));
+      f.classList.add('is-active');
+      const key = f.dataset.filter;
+      topics.forEach(t => {
+        const tags = (t.dataset.tags || '');
+        t.style.display = (key === 'all' || tags.includes(key)) ? '' : 'none';
+      });
+    }));
+  </script>
+  
+  <div class="social-banner" aria-label="FP Digital social links">
+  <a class="soc github" href="https://github.com/FpTechTeam" target="_blank" rel="noopener" aria-label="GitHub">
+    <svg viewBox="0 0 24 24" class="social-icon" aria-hidden="true">
+      <path d="M12 .5A12 12 0 0 0 0 12.8c0 5.6 3.7 10.3 8.9 12 0-.9-.1-3.1-.1-5.6-3.6.8-4.4-1.8-4.4-1.8a3.6 3.6 0 0 0-1.5-2c-1.3-.9.1-.9.1-.9a2.9 2.9 0 0 1 2.1 1.5 2.9 2.9 0 0 0 4 .9 2.9 2.9 0 0 1 .9-1.8c-2.9-.3-6-1.5-6-6.5a5 5 0 0 1 1.3-3.4 4.6 4.6 0 0 1 .1-3.3s1.1-.4 3.6 1.3a12.3 12.3 0 0 1 6.6 0c2.5-1.7 3.6-1.3 3.6-1.3a4.6 4.6 0 0 1 .1 3.3 5 5 0 0 1 1.3 3.4c0 5-3.1 6.2-6 6.5a3.2 3.2 0 0 1 .9 2.5c0 1.8 0 3.9-.1 4.4 5.2-1.7 8.9-6.4 8.9-12A12 12 0 0 0 12 .5Z"/>
+    </svg>
+  </a>
+
+  <a class="soc linkedin" href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
+    <svg viewBox="0 0 24 24" class="social-icon" aria-hidden="true">
+      <path d="M6.94 6.5A2.44 2.44 0 1 1 2.06 6.5a2.44 2.44 0 0 1 4.88 0ZM3.1 8.98h3.7V21H3.1ZM9.34 8.98h3.55v1.64h.05a3.89 3.89 0 0 1 3.5-1.92c3.75 0 4.44 2.46 4.44 5.66V21h-3.7v-5.49c0-1.31-.02-3-1.82-3-1.83 0-2.11 1.43-2.11 2.9V21h-3.7Z"/>
+    </svg>
+  </a>
+
+  <a class="soc x" href="https://twitter.com/" target="_blank" rel="noopener" aria-label="X">
+    <svg viewBox="0 0 24 24" class="social-icon" aria-hidden="true">
+      <path d="M18.9 2H22l-7.2 8.2L23.5 22h-6.7l-5.2-6.9L5.6 22H2.5l7.7-8.8L.5 2h6.8l4.7 6.3Z"/>
+    </svg>
+  </a>
+
+  <a class="soc youtube" href="https://youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">
+    <svg viewBox="0 0 24 24" class="social-icon" aria-hidden="true">
+      <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.5-5.8ZM9.6 15.5V8.5L15.8 12Z"/>
+    </svg>
+  </a>
+</div>
+
+
+    <!-- Top Bar -->
+    <header class="topbar">
+        <div class="container topbar-inner">
+        <a class="brand" href="/">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span class="brand-text">
+            <span class="brand-name">FP Digital</span>
+            <span class="brand-sub">Defense-grade systems • Real-time visualization • Edge compute</span>
+            </span>
+        </a>
+
+      <nav class="nav">
+        <a href="projects.html">Projects</a>
+
+        <a href="#topics">Grant Topics</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#about">About</a>
+        <a href="#contact" class="btn btn-primary">Contact</a>
+      </nav>
+
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+</header>
+
+
+
+
+
+
+
+<div class="social-banner" aria-label="FP Digital social links">
+  <a class="soc github" href="https://github.com/FpTechTeam" target="_blank" rel="noopener" aria-label="GitHub">
+    <svg viewBox="0 0 24 24" class="social-icon" aria-hidden="true">
+      <path d="M12 .5A12 12 0 0 0 0 12.8c0 5.6 3.7 10.3 8.9 12 0-.9-.1-3.1-.1-5.6-3.6.8-4.4-1.8-4.4-1.8a3.6 3.6 0 0 0-1.5-2c-1.3-.9.1-.9.1-.9a2.9 2.9 0 0 1 2.1 1.5 2.9 2.9 0 0 0 4 .9 2.9 2.9 0 0 1 .9-1.8c-2.9-.3-6-1.5-6-6.5a5 5 0 0 1 1.3-3.4 4.6 4.6 0 0 1 .1-3.3s1.1-.4 3.6 1.3a12.3 12.3 0 0 1 6.6 0c2.5-1.7 3.6-1.3 3.6-1.3a4.6 4.6 0 0 1 .1 3.3 5 5 0 0 1 1.3 3.4c0 5-3.1 6.2-6 6.5a3.2 3.2 0 0 1 .9 2.5c0 1.8 0 3.9-.1 4.4 5.2-1.7 8.9-6.4 8.9-12A12 12 0 0 0 12 .5Z"/>
+    </svg>
+  </a>
+
+  <a class="soc linkedin" href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn">
+    <svg viewBox="0 0 24 24" class="social-icon" aria-hidden="true">
+      <path d="M6.94 6.5A2.44 2.44 0 1 1 2.06 6.5a2.44 2.44 0 0 1 4.88 0ZM3.1 8.98h3.7V21H3.1ZM9.34 8.98h3.55v1.64h.05a3.89 3.89 0 0 1 3.5-1.92c3.75 0 4.44 2.46 4.44 5.66V21h-3.7v-5.49c0-1.31-.02-3-1.82-3-1.83 0-2.11 1.43-2.11 2.9V21h-3.7Z"/>
+    </svg>
+  </a>
+
+  <a class="soc x" href="https://twitter.com/" target="_blank" rel="noopener" aria-label="X">
+    <svg viewBox="0 0 24 24" class="social-icon" aria-hidden="true">
+      <path d="M18.9 2H22l-7.2 8.2L23.5 22h-6.7l-5.2-6.9L5.6 22H2.5l7.7-8.8L.5 2h6.8l4.7 6.3Z"/>
+    </svg>
+  </a>
+
+  <a class="soc youtube" href="https://youtube.com/" target="_blank" rel="noopener" aria-label="YouTube">
+    <svg viewBox="0 0 24 24" class="social-icon" aria-hidden="true">
+      <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.5-5.8ZM9.6 15.5V8.5L15.8 12Z"/>
+    </svg>  
+  </a>
+</div>

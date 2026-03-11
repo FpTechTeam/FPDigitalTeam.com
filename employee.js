@@ -312,3 +312,23 @@
 
   init();
 })();
+
+netlifyIdentity.on("signup", user => {
+
+  alert("Account created. Check your email to verify.");
+
+});
+
+netlifyIdentity.on("login", user => {
+
+  unlockPortal(user);
+
+  netlifyIdentity.close();
+
+});
+
+netlifyIdentity.on("logout", () => {
+
+  lockPortal();
+
+});
